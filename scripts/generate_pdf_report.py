@@ -197,7 +197,7 @@ def build_pdf():
             Paragraph("<b>Groupe :</b> n° 1 (Génomique & Systèmes)", table_cell_style)
         ],
         [
-            Paragraph("<b>Membres :</b> Benamara Ahmed Ryad, Étudiant 2, Étudiant 3, Étudiant 4, Étudiant 5", table_cell_style),
+            Paragraph("<b>Membres :</b> Aggoun Yasmine, Daoudi Anfal, Zaourar Meriem, Toubal Abdelghani, NOM_IMANE", table_cell_style),
             Paragraph("<b>Date :</b> 30 Octobre 2026", table_cell_style)
         ],
         [
@@ -227,7 +227,7 @@ def build_pdf():
     story.append(Paragraph("<b>1.3. Définition de l'Unité de Mesure :</b> L'objectif est de dénombrer les <b>variants distincts répertoriés</b> (<code>VariationID</code> unique) et non les cas cliniques ou la prévalence en population. Il s'agit d'une métrique d'hétérogénéité mutationnelle enregistrée dans les référentiels de diagnostic génétique.", body_style))
 
     story.append(Paragraph("2. Source de Données et Contrôle d'Intégrité", h1_style))
-    story.append(Paragraph("Le fichier source officiel <code>variant_summary.txt.gz</code> (Release 2026-10-19) est hébergé sur le serveur FTP de NCBI ClinVar. Sa taille est de <b>456 505 123 octets</b> (~456,5 Mo compressé ; 4 085 223 747 octets décompressé). Son empreinte cryptographique SHA-256 a été calculée et vérifiée : <code>b235cd5742ac615d55703672751fa3ea71c8222d5ff0547cd1e9b107fd8a647f</code>. Le pipeline vérifie automatiquement cette somme et teste l'intégrité de l'archive (<code>gzip -t</code>) avant de verrouiller les données brutes en lecture seule (<code>chmod a-w</code>). Les données sont placées sous licence du domaine public (US Government Work / CC0).", body_style))
+    story.append(Paragraph("Le fichier source officiel <code>variant_summary.txt.gz</code> (Release 2026-10-19) est hébergé sur le serveur FTP de NCBI ClinVar. Sa taille est de <b>456 577 488 octets</b> (~456,5 Mo compressé ; 4 085 824 530 octets décompressé). Son empreinte cryptographique SHA-256 a été calculée et vérifiée : <code>657b47d0a00ba3ad4b3ddf03e160835c8a4a3c7a2e130c92c904b70021a35703</code>. Le pipeline vérifie automatiquement cette somme et teste l'intégrité de l'archive (<code>gzip -t</code>) avant de verrouiller les données brutes en lecture seule (<code>chmod a-w</code>). Les données sont placées sous licence du domaine public (US Government Work / CC0).", body_style))
 
     # ================= PAGE 2 : METHODOLOGIE TECHNIQUE ET RESULTATS =================
     story.append(PageBreak())

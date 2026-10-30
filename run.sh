@@ -27,7 +27,7 @@ Pipeline ClinVar variant_summary - cardiomyopathie hypertrophique.
 Options:
   -c FILE   Fichier de configuration (defaut: config/dataset.env)
   -t N      Nombre de genes dans la figure finale (defaut: 15)
-  -f        Retelercharger les donnees meme si elles existent deja
+  -f        Retelecharger les donnees meme si elles existent deja
   -n        Afficher le plan d'execution sans telecharger ni analyser
   -h        Afficher cette aide
 
@@ -102,7 +102,7 @@ load_config() {
 }
 
 validate_config_ready() {
-    [[ "$VARIANT_SHA256" != TODO_* ]] || die "VARIANT_SHA256 doit etre complete par l'etudiant 2 dans config/dataset.env."
+    [[ "$VARIANT_SHA256" != TODO_* ]] || die "VARIANT_SHA256 doit etre defini dans config/dataset.env."
     [[ "$VARIANT_SHA256" =~ ^[[:xdigit:]]{64}$ ]] || die "VARIANT_SHA256 doit contenir 64 caracteres hexadecimaux."
 }
 
@@ -171,7 +171,7 @@ run_python_analysis() {
     local script="$PROJECT_ROOT/scripts/analyze_genes.py"
     local filtered_file="$PROCESSED_DIR/hcm_variants_grch38.tsv"
 
-    [[ -f "$script" ]] || die "Analyse Python manquante: scripts/analyze_genes.py (livrable de l'etudiant 3)."
+    [[ -f "$script" ]] || die "Analyse Python manquante: scripts/analyze_genes.py"
     log "INFO" "Analyse Python et creation des resultats"
     "$PYTHON_CMD" "$script" --variants "$filtered_file" --output-dir "$RESULTS_DIR" --top "$TOP_N"
 }

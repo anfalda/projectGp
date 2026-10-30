@@ -2,3 +2,5 @@
 # Les modules argparse, csv, json, collections, datetime, pathlib et unittest font partie de la bibliotheque standard Python 3.
 
 matplotlib>=3.8.0
+reportlab
+reportlab

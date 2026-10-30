@@ -19,10 +19,10 @@
 | Propriété | Valeur |
 | :--- | :--- |
 | **Nom du fichier** | `variant_summary.txt.gz` |
-| **Taille compressée (.gz)** | 456 505 123 octets (~456,5 Mo) |
-| **Taille décompressée (.txt)** | 4 085 223 747 octets (~4,09 Go) |
+| **Taille compressée (.gz)** | 456 577 488 octets (~456,5 Mo) |
+| **Taille décompressée (.txt)** | 4 085 824 530 octets (~4,09 Go) |
 | **Format** | Fichier texte tabulé (TSV), encodage UTF-8 / ASCII, compressé avec gzip |
-| **Somme de contrôle SHA-256** | `b235cd5742ac615d55703672751fa3ea71c8222d5ff0547cd1e9b107fd8a647f` |
+| **Somme de contrôle SHA-256** | `657b47d0a00ba3ad4b3ddf03e160835c8a4a3c7a2e130c92c904b70021a35703` |
 | **Somme de contrôle MD5** | `c79b46f3c02ef544608e0d9a83cac46e` |
 
 L'intégrité du fichier téléchargé est contrôlée automatiquement dans le pipeline `run.sh` par comparaison de l'empreinte cryptographique SHA-256 et par le test d'intégrité de l'archive gzip (`gzip -t`).
