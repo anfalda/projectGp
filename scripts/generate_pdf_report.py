@@ -197,7 +197,7 @@ def build_pdf():
             Paragraph("<b>Groupe :</b> n° 1 (Génomique & Systèmes)", table_cell_style)
         ],
         [
-            Paragraph("<b>Membres :</b> Aggoun Yasmine, Daoudi Anfal, Zaourar Meriem, Toubal Abdelghani, NOM_IMANE", table_cell_style),
+            Paragraph("<b>Membres :</b> Aggoun Yasmine, Daoudi Anfal, Zaourar Meriem, Toubal Abdelghani, Belferkous Imene", table_cell_style),
             Paragraph("<b>Date :</b> 30 Octobre 2026", table_cell_style)
         ],
         [
