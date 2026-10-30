@@ -39,7 +39,7 @@ Ce projet implémente un pipeline bioinformatique automatisé et reproductible c
 ## 2. Architecture du Projet
 
 ```text
-redesigned-spoon/
+projet-maladie-clinvar/
 │
 ├── config/
 │   └── dataset.env              # Variables d'environnement, URLs officielles et SHA-256

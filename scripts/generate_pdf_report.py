@@ -65,7 +65,7 @@ class NumberedCanvas(canvas.Canvas):
 
         self.drawString(
             2.0 * cm, 1.1 * cm,
-            "Projet Bioinformatique & Administration Système — Dépôt : github.com/ffmly/redesigned-spoon"
+            "Projet Bioinformatique & Administration Système — Dépôt : github.com/anfalda/projet-maladie-clinvar"
         )
         self.drawRightString(
             19.0 * cm, 1.1 * cm,
@@ -201,7 +201,7 @@ def build_pdf():
             Paragraph("<b>Date :</b> 30 Octobre 2026", table_cell_style)
         ],
         [
-            Paragraph("<b>Dépôt GitHub :</b> https://github.com/ffmly/redesigned-spoon", table_cell_style),
+            Paragraph("<b>Dépôt GitHub :</b> https://github.com/anfalda/projet-maladie-clinvar", table_cell_style),
             Paragraph("<b>Jeu de données :</b> NCBI ClinVar <i>variant_summary.txt.gz</i>", table_cell_style)
         ]
     ]
