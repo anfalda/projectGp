@@ -129,6 +129,7 @@ Le projet applique une séparation claire des responsabilités entre **Bash** (f
 
 ### Environnement Python
 - Python 3.10 ou version supérieure.
+- Sous Ubuntu / WSL, si besoin : `sudo apt install git curl python3-venv`.
 - Création d'un environnement virtuel isolé, puis installation des dépendances :
 
 ```bash
@@ -137,7 +138,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> Le premier lancement de `./run.sh` télécharge automatiquement ~450 Mo (connexion Internet requise, 3 à 5 minutes selon le débit), puis filtre et analyse les données (~1 minute). Prévoir ~1 Go d'espace disque. Le jeu de données est une copie mensuelle archivée de ClinVar (`variant_summary_2026-10.txt.gz`) qui ne change jamais : la somme SHA-256 et les résultats restent identiques d'une machine à l'autre.
+> Le premier lancement de `./run.sh` télécharge automatiquement ~450 Mo (connexion Internet requise, 5 à 15 minutes selon le débit), puis filtre et analyse les données (~1 minute). Prévoir ~1 Go d'espace disque. Le jeu de données est une copie mensuelle archivée de ClinVar (`variant_summary_2026-10.txt.gz`) qui ne change jamais : la somme SHA-256 et les résultats restent identiques d'une machine à l'autre.
 
 ---
 
@@ -154,6 +155,18 @@ Pour exécuter l'ensemble de la chaîne de bout en bout (téléchargement condit
 
 ```bash
 ./run.sh
+```
+
+### Voir les résultats
+
+À la fin de `./run.sh`, le **classement des gènes s'affiche directement dans le terminal** (tableau du Top N). Les autres résultats sont des fichiers dans `results/` :
+
+```bash
+column -t -s, results/gene_ranking.csv                # tableau complet (40 gènes)
+cat results/summary.json                              # statistiques
+xdg-open results/top_genes.png                        # figure, Linux avec interface graphique
+explorer.exe "$(wslpath -w results/top_genes.png)"    # figure, WSL (Windows)
+open results/top_genes.png                            # figure, macOS
 ```
 
 ### Options de ligne de commande (`getopts`)
@@ -285,8 +298,8 @@ Chaque membre prend en charge un chapitre du cadre technique (4 critères chacun
 
 | Membre | Chapitre | Fichiers maîtrisés | Parties du rapport |
 | :--- | :--- | :--- | :--- |
-| **Aggoun Yasmine** | Shell | `scripts/filter_hcm_variants.sh` ; dans `run.sh` : aide `-h`, `getopts`, code de retour | §3.1, §7.2, §10 |
-| **Daoudi Anfal** | Programmation de script | `run.sh` : `set -Eeuo pipefail`, `trap`, fonctions réutilisées, relance sans nettoyage | Résumé, §7.1, §7.3 |
-| **Toubal Abdelghani** | Python | `scripts/analyze_genes.py`, `tests/test_analyze_genes.py` | §3.2, §4, §7.5 |
-| **Zaourar Meriem** | Administration système | `requirements.txt` et venv, `cron/`, `logs/`, droits (`chmod a-w`, `+x`) | §5, §6, §7.4, §8 |
-| **Belferkous Imene** | Fichiers et données | `SOURCES.md`, `config/dataset.env`, SHA-256, archive `tar`, README | §1, §2, §9 |
+| **Aggoun Soundous Yasmine** (222231369119) | Shell | `scripts/filter_hcm_variants.sh` ; dans `run.sh` : aide `-h`, `getopts`, code de retour | §3.1, §7.2, §10 |
+| **Daoudi Anfal** (232331601003) | Programmation de script | `run.sh` : `set -Eeuo pipefail`, `trap`, fonctions réutilisées, relance sans nettoyage | Résumé, §7.1, §7.3 |
+| **Toubal Abdelghani** (202131068318) | Python | `scripts/analyze_genes.py`, `tests/test_analyze_genes.py` | §3.2, §4, §7.5 |
+| **Zaourar Meriem** (222231355920) | Administration système | `requirements.txt` et venv, `cron/`, `logs/`, droits (`chmod a-w`, `+x`) | §5, §6, §7.4, §8 |
+| **Belferkous Imene** (212231693910) | Fichiers et données | `SOURCES.md`, `config/dataset.env`, SHA-256, archive `tar`, README | §1, §2, §9 |
