@@ -65,7 +65,7 @@ class NumberedCanvas(canvas.Canvas):
 
         self.drawString(
             2.0 * cm, 1.1 * cm,
-            "Projet Bioinformatique & Administration Système — Dépôt : github.com/anfalda/projet-maladie-clinvar"
+            "Projet Bioinformatique & Administration Système — Dépôt : github.com/anfalda/projectGp"
         )
         self.drawRightString(
             19.0 * cm, 1.1 * cm,
@@ -198,10 +198,10 @@ def build_pdf():
         ],
         [
             Paragraph("<b>Membres :</b> Aggoun Yasmine, Daoudi Anfal, Zaourar Meriem, Toubal Abdelghani, Belferkous Imene", table_cell_style),
-            Paragraph("<b>Date :</b> 30 Octobre 2026", table_cell_style)
+            Paragraph("<b>Date :</b> 31 Octobre 2026", table_cell_style)
         ],
         [
-            Paragraph("<b>Dépôt GitHub :</b> https://github.com/anfalda/projet-maladie-clinvar", table_cell_style),
+            Paragraph("<b>Dépôt GitHub :</b> https://github.com/anfalda/projectGp", table_cell_style),
             Paragraph("<b>Jeu de données :</b> NCBI ClinVar <i>variant_summary.txt.gz</i>", table_cell_style)
         ]
     ]
@@ -219,7 +219,7 @@ def build_pdf():
     story.append(Spacer(1, 8))
 
     # Résumé exécutif
-    story.append(Paragraph("<b>Résumé Exécutif :</b> Ce travail met en œuvre un pipeline reproductible combinant Shell POSIX et Python 3 pour répondre à la question : <i>Quels gènes concentrent le plus grand nombre de variants distincts classés « Pathogenic » ou « Likely pathogenic » dans ClinVar, associés spécifiquement à la cardiomyopathie hypertrophique (CMH) ?</i> À partir d'un fichier brut de 456,5 Mo compressé (plus de 4 Go décompressé), le filtrage en flux streaming extrait 17 027 enregistrements germlinaires sur GRCh38. Après normalisation de la pathogénicité, exclusion des annotations ambiguës et dédoublonnage unitaire par <code>VariationID</code>, <b>1 435 variants distincts</b> répartis sur <b>40 gènes</b> sont retenus. Deux gènes sarcomériques, <b>MYBPC3</b> (838 variants, 58,40 %) et <b>MYH7</b> (308 variants, 21,46 %), totalisent <b>79,86 %</b> des variants répertoriés, corroborant la littérature cardiologique.", body_style))
+    story.append(Paragraph("<b>Résumé Exécutif :</b> Ce travail met en œuvre un pipeline reproductible combinant Shell POSIX et Python 3 pour répondre à la question : <i>Quels gènes concentrent le plus grand nombre de variants distincts classés « Pathogenic » ou « Likely pathogenic » dans ClinVar, associés spécifiquement à la cardiomyopathie hypertrophique (CMH) ?</i> À partir d'un fichier brut de 450,7 Mo compressé (plus de 4 Go décompressé), le filtrage en flux streaming extrait 17 012 enregistrements germlinaires sur GRCh38. Après normalisation de la pathogénicité, exclusion des annotations ambiguës et dédoublonnage unitaire par <code>VariationID</code>, <b>1 427 variants distincts</b> répartis sur <b>40 gènes</b> sont retenus. Deux gènes sarcomériques, <b>MYBPC3</b> (832 variants, 58,30 %) et <b>MYH7</b> (309 variants, 21,65 %), totalisent <b>79,96 %</b> des variants répertoriés, corroborant la littérature cardiologique.", body_style))
 
     story.append(Paragraph("1. Introduction et Problématique Médicale", h1_style))
     story.append(Paragraph("<b>1.1. Physiopathologie de la Cardiomyopathie Hypertrophique :</b> La cardiomyopathie hypertrophique (CMH / HCM) est la maladie cardiaque héréditaire monogénique la plus fréquente, avec une prévalence estimée à 1 pour 500 dans la population générale. Elle se caractérise par une hypertrophie ventriculaire gauche inexpliquée par une cause hémodynamique (sténose aortique, hypertension). Cliniquement, elle s'étend de formes asymptomatiques à des complications sévères : insuffisance cardiaque, fibrillation atriale, et surtout mort subite chez l'adulte jeune et le sportif.", body_style))
@@ -227,7 +227,7 @@ def build_pdf():
     story.append(Paragraph("<b>1.3. Définition de l'Unité de Mesure :</b> L'objectif est de dénombrer les <b>variants distincts répertoriés</b> (<code>VariationID</code> unique) et non les cas cliniques ou la prévalence en population. Il s'agit d'une métrique d'hétérogénéité mutationnelle enregistrée dans les référentiels de diagnostic génétique.", body_style))
 
     story.append(Paragraph("2. Source de Données et Contrôle d'Intégrité", h1_style))
-    story.append(Paragraph("Le fichier source officiel <code>variant_summary.txt.gz</code> (Release 2026-10-19) est hébergé sur le serveur FTP de NCBI ClinVar. Sa taille est de <b>456 577 488 octets</b> (~456,5 Mo compressé ; 4 085 824 530 octets décompressé). Son empreinte cryptographique SHA-256 a été calculée et vérifiée : <code>657b47d0a00ba3ad4b3ddf03e160835c8a4a3c7a2e130c92c904b70021a35703</code>. Le pipeline vérifie automatiquement cette somme et teste l'intégrité de l'archive (<code>gzip -t</code>) avant de verrouiller les données brutes en lecture seule (<code>chmod a-w</code>). Les données sont placées sous licence du domaine public (US Government Work / CC0).", body_style))
+    story.append(Paragraph("Le fichier source officiel <code>variant_summary_2026-10.txt.gz</code> (copie mensuelle archivée, release 2026-10) est hébergé sur le serveur FTP de NCBI ClinVar. Sa taille est de <b>450 727 547 octets</b> (~450,7 Mo compressé ; 4 043 056 609 octets décompressé). Son empreinte cryptographique SHA-256 a été calculée et vérifiée : <code>a6a58df4d9049c9187a79a8fb4e70f1f3b5550e1708c6c74b7be0b268f5032da</code>. Le pipeline vérifie automatiquement cette somme et teste l'intégrité de l'archive (<code>gzip -t</code>) avant de verrouiller les données brutes en lecture seule (<code>chmod a-w</code>). Les données sont mises à disposition par le NCBI sans restriction d'utilisation (voir SOURCES.md).", body_style))
 
     # ================= PAGE 2 : METHODOLOGIE TECHNIQUE ET RESULTATS =================
     story.append(PageBreak())
@@ -235,20 +235,21 @@ def build_pdf():
     story.append(Paragraph("3. Architecture de la Chaîne de Traitement (Pipeline)", h1_style))
     story.append(Paragraph("Le projet sépare strictement le traitement système de gros volume (Bash) et l'analyse statistique relationnelle (Python), garantissant performance, traçabilité et faible consommation mémoire :", body_style))
 
+    story.append(Paragraph("<b>Motif recherché :</b> variant ClinVar d'assemblage <code>GRCh38</code>, d'origine <code>germline</code>, dont la liste <code>PhenotypeList</code> contient exactement l'intitulé « Hypertrophic cardiomyopathy » (numéro de sous-type facultatif), classé <code>Pathogenic</code>, <code>Likely pathogenic</code> ou <code>Pathogenic/Likely pathogenic</code>, et compté une seule fois par <code>VariationID</code>.", body_style))
     story.append(Paragraph("<b>3.1. Filtrage Shell POSIX en Flux Continu (scripts/filter_hcm_variants.sh) :</b> Afin d'éviter d'extraire plus de 4 Go sur le disque, le traitement s'exécute en streaming via un pipeline de 4 commandes connectées par tubes (pipes) :", body_style))
     story.append(Paragraph("• <code>gzip -cd</code> décompresse le flux à la volée vers la sortie standard.", bullet_style))
     story.append(Paragraph("• <code>awk</code> sélectionne l'assemblage <code>GRCh38</code>, l'origine <code>germline</code> et recherche dans <code>PhenotypeList</code> l'intitulé strict <code>Hypertrophic cardiomyopathy</code> (avec numéro de sous-type facultatif, ex. CMH 1 à 20). Les mentions secondaires du terme au sein d'autres pathologies sont formellement rejetées.", bullet_style))
     story.append(Paragraph("• <code>sort</code> et <code>uniq</code> ordonnent et éliminent les redondances physiques immédiates.", bullet_style))
-    story.append(Paragraph("Le filtre conserve l'en-tête et produit le fichier tabulé <code>data/processed/hcm_variants_grch38.tsv</code> contenant <b>17 027 lignes</b>.", body_style))
+    story.append(Paragraph("Le filtre conserve l'en-tête et produit le fichier tabulé <code>data/processed/hcm_variants_grch38.tsv</code> contenant <b>17 012 lignes</b>.", body_style))
 
     story.append(Paragraph("<b>3.2. Normalisation et Dédoublonnage Python (scripts/analyze_genes.py) :</b> Le script applique les critères d'inclusion et de qualité :", body_style))
-    story.append(Paragraph("1. <b>Classification de pathogénicité :</b> Seules les classes canoniques <code>Pathogenic</code>, <code>Likely pathogenic</code> et <code>Pathogenic/Likely pathogenic</code> sont retenues (1 438 occurrences brutes). Les 15 592 variants exclus (VUS : 7 930 ; bénins : 5 714 ; conflictuels : 1 944) sont tracés avec leur motif dans <code>results/excluded_variants.csv</code>.", bullet_style))
+    story.append(Paragraph("1. <b>Classification de pathogénicité :</b> Seules les classes canoniques <code>Pathogenic</code>, <code>Likely pathogenic</code> et <code>Pathogenic/Likely pathogenic</code> sont retenues (1 430 occurrences brutes). Les 15 585 variants exclus (VUS : 7 929 ; bénins : 5 717 ; conflictuels : 1 935 ; autres : 4) sont tracés avec leur motif dans <code>results/excluded_variants.csv</code>.", bullet_style))
     story.append(Paragraph("2. <b>Validation du symbole de gène :</b> Normalisation HGNC. Les symboles manquants (<code>-</code>, vide) ou ambigus multi-gènes (présence de <code>;</code> résultant de remaniements chromosomiques) sont exclus du décompte unitaire.", bullet_style))
     story.append(Paragraph("3. <b>Dédoublonnage unitaire :</b> Chaque <code>VariationID</code> n'est comptabilisé qu'une seule fois par gène hôte.", bullet_style))
     story.append(Paragraph("4. <b>Génération des sorties :</b> Production des CSV de classement, variants retenus, table des exclus, synthèse JSON et figure PNG.", bullet_style))
 
     story.append(Paragraph("4. Résultats Chiffrés et Classement des Gènes", h1_style))
-    story.append(Paragraph("Sur 17 027 lignes initiales, l'analyse isole <b>1 435 variants distincts</b> répartis sur <b>40 gènes</b>. Le tableau ci-dessous détaille le Top 15 des gènes associés à la cardiomyopathie hypertrophique dans ClinVar :", body_style))
+    story.append(Paragraph("Sur 17 012 lignes initiales, l'analyse isole <b>1 427 variants distincts</b> répartis sur <b>40 gènes</b>. Le tableau ci-dessous détaille le Top 15 des gènes associés à la cardiomyopathie hypertrophique dans ClinVar :", body_style))
 
     # Tableau des résultats Top 15
     headers = [
@@ -260,21 +261,21 @@ def build_pdf():
         Paragraph("Mécanisme pathogénique", table_header_style)
     ]
     rows_data = [
-        ["1", "MYBPC3", "838", "58,40 %", "Myosin-binding protein C (sarcomère)", "Haplo-insuffisance (mutations tronquantes)"],
-        ["2", "MYH7", "308", "21,46 %", "Chaîne lourde bêta-myosine (filament épais)", "Dominant-négatif (tête globulaire S1)"],
-        ["3", "FLNC", "66", "4,60 %", "Filamine C (cytosquelette / disque Z)", "Altération structurelle, CMH arythmogène"],
-        ["4", "TNNI3", "56", "3,90 %", "Troponine I cardiaque (filament fin)", "Hyper-sensibilisation calcique (Ca2+)"],
-        ["5", "TNNT2", "32", "2,23 %", "Troponine T2 cardiaque (filament fin)", "Altération de contractilité, mort subite"],
-        ["6", "TPM1", "24", "1,67 %", "Alpha-tropomyosine 1 (filament fin)", "Régulation anormale actine-myosine"],
-        ["7", "TTN", "15", "1,05 %", "Titine (filament élastique sarcomérique)", "Altération biomécanique passive"],
+        ["1", "MYBPC3", "832", "58,30 %", "Myosin-binding protein C (sarcomère)", "Haplo-insuffisance (mutations tronquantes)"],
+        ["2", "MYH7", "309", "21,65 %", "Chaîne lourde bêta-myosine (filament épais)", "Dominant-négatif (tête globulaire S1)"],
+        ["3", "FLNC", "66", "4,63 %", "Filamine C (cytosquelette / disque Z)", "Altération structurelle, CMH arythmogène"],
+        ["4", "TNNI3", "56", "3,92 %", "Troponine I cardiaque (filament fin)", "Hyper-sensibilisation calcique (Ca2+)"],
+        ["5", "TNNT2", "32", "2,24 %", "Troponine T2 cardiaque (filament fin)", "Altération de contractilité, mort subite"],
+        ["6", "TPM1", "24", "1,68 %", "Alpha-tropomyosine 1 (filament fin)", "Régulation anormale actine-myosine"],
+        ["7", "TTN", "14", "0,98 %", "Titine (filament élastique sarcomérique)", "Altération biomécanique passive"],
         ["8", "PRKAG2", "11", "0,77 %", "Sous-unité gamma-2 AMPK (métabolique)", "Phénocopie : surcharge glycogénique / WPW"],
         ["9", "MYL2", "10", "0,70 %", "Chaîne légère régulatrice de myosine", "Dysfonction de phosphorylation"],
         ["10", "ALPK3", "8", "0,56 %", "Alpha-kinase 3 (cytosquelette)", "Formes pédiatriques sévères autosomiques"],
         ["11", "MYH7B", "8", "0,56 %", "Myosine 7B / hôte microARN miR-499", "Régulation transcriptionnelle"],
         ["12", "LAMP2", "7", "0,49 %", "Protéine lysosomale (membrane)", "Phénocopie : maladie de Danon (liée à l'X)"],
         ["13", "MYH6", "5", "0,35 %", "Chaîne lourde alpha-myosine", "Formes atypiques / tardives"],
-        ["14", "TCAP", "5", "0,35 %", "Téléthonine / Titin-cap (disque Z)", "Défaut d'ancrage sarcomérique"],
-        ["15", "ACTC1", "4", "0,28 %", "Actine alpha cardiaque (filament fin)", "Déficit d'interaction actomyosine"],
+        ["14", "ACTC1", "4", "0,28 %", "Actine alpha cardiaque (filament fin)", "Déficit d'interaction actomyosine"],
+        ["15", "JPH2", "4", "0,28 %", "Jonctophiline-2 (jonction membrane / réticulum sarcoplasmique)", "Altération du couplage excitation-contraction"],
     ]
     table_content = [headers]
     for r in rows_data:
@@ -307,22 +308,24 @@ def build_pdf():
     story.append(Paragraph("La figure ci-dessous (générée automatiquement en haute résolution à 300 DPI dans <code>results/top_genes.png</code>) illustre la prépondérance écrasante des deux gènes sarcomériques majeurs :", body_style))
 
     if IMAGE_PATH.exists():
-        img = Image(str(IMAGE_PATH), width=16.8 * cm, height=9.8 * cm)
+        from reportlab.lib.utils import ImageReader
+        iw, ih = ImageReader(str(IMAGE_PATH)).getSize()
+        img = Image(str(IMAGE_PATH), width=16.8 * cm, height=16.8 * cm * ih / iw)
         story.append(img)
         story.append(Spacer(1, 4))
-        story.append(Paragraph("<b>Figure 1 :</b> Distribution des variants distincts « Pathogenic » ou « Likely pathogenic » associés à la CMH dans ClinVar (GRCh38, germline). MYBPC3 et MYH7 représentent à eux seuls 79,86 % de l'ensemble des variants répertoriés.", ParagraphStyle("FigLegend", parent=body_style, fontSize=7.5, leading=10, textColor=colors.HexColor("#4A5568"), alignment=1)))
+        story.append(Paragraph("<b>Figure 1 :</b> Distribution des variants distincts « Pathogenic » ou « Likely pathogenic » associés à la CMH dans ClinVar (GRCh38, germline). MYBPC3 et MYH7 représentent à eux seuls 79,96 % de l'ensemble des variants répertoriés.", ParagraphStyle("FigLegend", parent=body_style, fontSize=7.5, leading=10, textColor=colors.HexColor("#4A5568"), alignment=1)))
     else:
         story.append(Paragraph("<i>[Image top_genes.png disponible dans results/]</i>", body_style))
 
     story.append(Paragraph("6. Discussion Biologique et Confrontation Clinique", h1_style))
-    story.append(Paragraph("<b>6.1. Le Duopole Sarcomérique Majeur (MYBPC3 et MYH7) :</b> Notre analyse met en évidence que <b>MYBPC3</b> (58,40 %) et <b>MYH7</b> (21,46 %) regroupent <b>1 146 variants sur 1 435 (79,86 %)</b>. Ce résultat corrobore avec une exactitude remarquable les grandes séries cardiologiques internationales (Marian & Braunwald, <i>Circulation Research</i>, 2017) qui établissent que ces deux gènes rendent compte d'environ 80 % des cas de CMH génotypiquement résolus :", body_style))
+    story.append(Paragraph("<b>6.1. Le Duopole Sarcomérique Majeur (MYBPC3 et MYH7) :</b> Notre analyse met en évidence que <b>MYBPC3</b> (58,30 %) et <b>MYH7</b> (21,65 %) regroupent <b>1 141 variants sur 1 427 (79,96 %)</b>. Ce résultat est cohérent avec la littérature cardiologique internationale (Marian & Braunwald, <i>Circulation Research</i>, 2017) qui désigne ces deux gènes comme les plus fréquemment impliqués chez les patients génotypés (la présente analyse mesure la diversité des variants, non la proportion de patients) :", body_style))
     story.append(Paragraph("• <b>MYBPC3 :</b> Caractérisé par une grande hétérogénéité de mutations tronquantes (non-sens, décalages de cadre de lecture, sites d'épissage) conduisant à une instabilité de l'ARNm et une haplo-insuffisance protéique dans le sarcomère.", bullet_style))
     story.append(Paragraph("• <b>MYH7 :</b> Dominé au contraire par des mutations faux-sens siégeant dans les domaines fonctionnels critiques de la bêta-myosine (tête globulaire S1 et tige d'ancrage), exerçant un effet « poison-peptide » dominant-négatif qui perturbe la force unitaire contractile.", bullet_style))
 
-    story.append(Paragraph("<b>6.2. Les Gènes Régulateurs du Filament Fin (TNNI3, TNNT2, TPM1, ACTC1) :</b> Ces protéines régulent l'activation du cycle actomyosine par le calcium intracellulaire. Les variants de <i>TNNT2</i> et <i>TNNI3</i> représentent 6,13 % des variants retenus. Cliniquement, les mutations de <i>TNNT2</i> sont réputées pour induire une hypertrophie morphologique modeste mais un risque arythmogène élevé avec menace de mort subite précoce.", body_style))
+    story.append(Paragraph("<b>6.2. Les Gènes Régulateurs du Filament Fin (TNNI3, TNNT2, TPM1, ACTC1) :</b> Ces protéines régulent l'activation du cycle actomyosine par le calcium intracellulaire. Les variants de <i>TNNT2</i> et <i>TNNI3</i> représentent 6,17 % des variants retenus. Cliniquement, les mutations de <i>TNNT2</i> sont réputées pour induire une hypertrophie morphologique modeste mais un risque arythmogène élevé avec menace de mort subite précoce.", body_style))
 
     story.append(Paragraph("<b>6.3. Gènes Non-Sarcomériques et Phénocopies Métaboliques :</b>", body_style))
-    story.append(Paragraph("• <b>FLNC (4,60 %, 3e rang) :</b> Filamine C du disque Z. Les variants de FLNC constituent une cause majeure de cardiomyopathies avec arythmies ventriculaires malignes.", bullet_style))
+    story.append(Paragraph("• <b>FLNC (4,63 %, 3e rang) :</b> Filamine C du disque Z. Les variants de FLNC sont associés à des cardiomyopathies avec arythmies ventriculaires malignes.", bullet_style))
     story.append(Paragraph("• <b>PRKAG2 et LAMP2 :</b> Ces gènes illustrent l'importance du diagnostic différentiel génétique. PRKAG2 est une glycogénose cardiaque souvent confondue avec la CMH mais associée à une préexcitation ventriculaire (Wolff-Parkinson-White) ; LAMP2 correspond à la maladie de Danon (liée à l'X, hypertrophie massive et atteinte multisystémique).", bullet_style))
 
     # ================= PAGE 4 : SYSTEME, REPRODUCTIBILITE, LIMITES ET CONCLUSION =================
@@ -344,10 +347,10 @@ def build_pdf():
     story.append(Paragraph("8. Limites Scientifiques et Perspectives", h1_style))
     story.append(Paragraph("1. <b>Biais de Soumission ClinVar :</b> ClinVar est une archive participative. Les gènes historiques de panels diagnostiques hospitaliers (<i>MYBPC3</i>, <i>MYH7</i>) bénéficient d'un volume de séquençage et de soumission bien supérieur à des gènes récemment identifiés comme <i>ALPK3</i>.", body_style))
     story.append(Paragraph("2. <b>Non-Équivalence avec la Prévalence Clinique :</b> Un variant récurrent retrouvé chez 200 patients distincts compte pour un seul <code>VariationID</code>, tout comme un variant familial privé. Les résultats décrivent l'hétérogénéité des allèles délétères documentés.", body_style))
-    story.append(Paragraph("3. <b>Masse des Variants VUS :</b> 7 930 variants filtrés ont été exclus en raison d'une classification incertaine. L'apport des prédicteurs d'intelligence artificielle (AlphaMissense) et l'intégration du score d'étoiles ClinVar constituent des perspectives d'approfondissement majeures.", body_style))
+    story.append(Paragraph("3. <b>Masse des Variants VUS :</b> 7 929 variants filtrés ont été exclus en raison d'une classification incertaine. L'apport des prédicteurs d'intelligence artificielle (AlphaMissense) et l'intégration du score d'étoiles ClinVar constituent des perspectives d'approfondissement majeures.", body_style))
 
     story.append(Paragraph("9. Conclusion", h1_style))
-    story.append(Paragraph("Le pipeline développé apporte une réponse quantitative rigoureuse à la question de recherche : la diversité allélique pathogène de la CMH est dominée de manière hégémonique par <b>MYBPC3 (58,40 %)</b> et <b>MYH7 (21,46 %)</b>. La chaîne logicielle hybride Shell/Python associe haute performance de filtrage en flux, reproductibilité totale et rigueur d'administration système.", body_style))
+    story.append(Paragraph("Le pipeline développé apporte une réponse quantitative rigoureuse à la question de recherche : la diversité allélique pathogène de la CMH est dominée de manière hégémonique par <b>MYBPC3 (58,30 %)</b> et <b>MYH7 (21,65 %)</b>. La chaîne logicielle hybride Shell/Python associe haute performance de filtrage en flux, reproductibilité totale et rigueur d'administration système.", body_style))
 
     story.append(Paragraph("10. Références Bibliographiques", h1_style))
     story.append(Paragraph("1. <b>Landrum MJ, et al.</b> ClinVar: improvements to access, data extraction and curation. <i>Nucleic Acids Res.</i> 2020;48(D1):D835-D844.<br/>"

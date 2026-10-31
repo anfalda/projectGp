@@ -4,13 +4,15 @@
 
 - **Organisme producteur :** National Center for Biotechnology Information (NCBI), National Library of Medicine (NLM), National Institutes of Health (NIH), États-Unis.
 - **Base de données :** **ClinVar** (archive publique de rapports sur les relations entre les variations génomiques humaines et les phénotypes observés).
-- **Fichier source :** `variant_summary.txt.gz`
+- **Fichier source :** `variant_summary_2026-10.txt.gz` (copie mensuelle archivée de `variant_summary.txt.gz`)
 - **URL officielle de téléchargement :**  
   `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/variant_summary.txt.gz`
+- **URL de la copie figée utilisée par le pipeline :**  
+  `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/variant_summary_2026-10.txt.gz`
 - **Répertoire FTP parent :**  
   `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/`
-- **Version / Release :** `2026-10-19` (instantané hebdomadaire NCBI ClinVar).
-- **Date de vérification et téléchargement :** 23/10/2026 (contrôlé le 30/10/2026).
+- **Version / Release :** `2026-10` (archive mensuelle NCBI ClinVar, fichier immuable : la somme SHA-256 reste valide).
+- **Date de vérification et téléchargement :** 31/10/2026.
 
 ---
 
@@ -18,12 +20,12 @@
 
 | Propriété | Valeur |
 | :--- | :--- |
-| **Nom du fichier** | `variant_summary.txt.gz` |
-| **Taille compressée (.gz)** | 456 577 488 octets (~456,5 Mo) |
-| **Taille décompressée (.txt)** | 4 085 824 530 octets (~4,09 Go) |
+| **Nom du fichier** | `variant_summary_2026-10.txt.gz` |
+| **Taille compressée (.gz)** | 450 727 547 octets (~450,7 Mo) |
+| **Taille décompressée (.txt)** | 4 043 056 609 octets (~4,04 Go) |
 | **Format** | Fichier texte tabulé (TSV), encodage UTF-8 / ASCII, compressé avec gzip |
-| **Somme de contrôle SHA-256** | `657b47d0a00ba3ad4b3ddf03e160835c8a4a3c7a2e130c92c904b70021a35703` |
-| **Somme de contrôle MD5** | `c79b46f3c02ef544608e0d9a83cac46e` |
+| **Somme de contrôle SHA-256** | `a6a58df4d9049c9187a79a8fb4e70f1f3b5550e1708c6c74b7be0b268f5032da` |
+| **Somme de contrôle MD5** | `a391afa7d9f48676fab45c0d0ef282ad` |
 
 L'intégrité du fichier téléchargé est contrôlée automatiquement dans le pipeline `run.sh` par comparaison de l'empreinte cryptographique SHA-256 et par le test d'intégrité de l'archive gzip (`gzip -t`).
 
@@ -31,7 +33,7 @@ L'intégrité du fichier téléchargé est contrôlée automatiquement dans le p
 
 ## 3. Conditions de Réutilisation et Licence
 
-- **Statut juridique :** Domaine public (*U.S. Government Work*, conformément à la section 105 du titre 17 du Code des États-Unis).
+- **Statut juridique :** données produites par le NCBI (agence fédérale américaine), qui n'impose pas de restriction à leur utilisation (voir https://www.ncbi.nlm.nih.gov/home/about/policies/). Certains contributeurs peuvent toutefois revendiquer des droits sur leurs soumissions.
 - **Conditions d'usage :** Les données de ClinVar sont mises à disposition gratuitement et sans restriction d'accès ou de propriété intellectuelle. Elles peuvent être librement redistribuées, modifiées, agrégées et utilisées pour des projets de recherche, d'enseignement ou d'application clinique.
 - **Attribution requise :** Toute publication ou présentation exploitant ces données doit citer la base ClinVar et le NCBI conformément aux recommandations officielles de citation du NIH.
 

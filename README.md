@@ -3,7 +3,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Bash 5.0+](https://img.shields.io/badge/bash-5.0+-green.svg)](https://www.gnu.org/software/bash/)
 [![Dataset ClinVar](https://img.shields.io/badge/data-NCBI%20ClinVar-orange.svg)](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/variant_summary.txt.gz)
-[![License: CC0 / Public Domain](https://img.shields.io/badge/license-Public%20Domain-lightgrey.svg)](SOURCES.md)
+[![Licence](https://img.shields.io/badge/licence-voir%20SOURCES.md-lightgrey.svg)](SOURCES.md)
 
 Ce projet implémente un pipeline bioinformatique automatisé et reproductible combinant **Bash** et **Python 3** pour identifier et hiérarchiser les gènes concentrant le plus grand nombre de variants distincts classés **« Pathogenic »** ou **« Likely pathogenic »** dans la base de données **NCBI ClinVar**, spécifiquement associés à la **cardiomyopathie hypertrophique (CMH / HCM)**.
 
@@ -39,7 +39,7 @@ Ce projet implémente un pipeline bioinformatique automatisé et reproductible c
 ## 2. Architecture du Projet
 
 ```text
-projet-maladie-clinvar/
+projectGp/
 │
 ├── config/
 │   └── dataset.env              # Variables d'environnement, URLs officielles et SHA-256
@@ -48,7 +48,7 @@ projet-maladie-clinvar/
 │   └── clinvar_pipeline.cron     # Configuration d'automatisation planifiée cron
 │
 ├── data/
-│   ├── raw/                     # Données brutes téléchargées (variant_summary.txt.gz)
+│   ├── raw/                     # Données brutes téléchargées (variant_summary_2026-10.txt.gz)
 │   └── processed/               # Données filtrées intermédiaires (hcm_variants_grch38.tsv)
 │
 ├── logs/                        # Fichiers journaux horodatés (run_YYYYMMDD_HHMMSS.log)
@@ -63,7 +63,8 @@ projet-maladie-clinvar/
 │
 ├── scripts/
 │   ├── filter_hcm_variants.sh   # Étape Shell : décompression en flux et filtrage strict
-│   └── analyze_genes.py         # Étape Python : dédoublonnage, calculs et visualisations
+│   ├── analyze_genes.py         # Étape Python : dédoublonnage, calculs et visualisations
+│   └── generate_pdf_report.py   # Génération de rapport.pdf (ReportLab)
 │
 ├── tests/
 │   └── test_analyze_genes.py    # Suite de tests unitaires automatisés (unittest)
@@ -73,8 +74,7 @@ projet-maladie-clinvar/
 ├── requirements.txt             # Dépendances logicielles Python
 ├── README.md                    # Documentation complète du projet
 ├── SOURCES.md                   # Fiche descriptive des sources de données et intégrité
-├── FICHE_VALIDATION_SUJET.md    # Fiche de cadrage académique
-├── GUIDE_EQUIPE.md              # Guide d'organisation et interfaces d'équipe
+├── rapport.pdf                  # Rapport final (4 pages)
 └── LIEN_GIT.txt                 # Lien vers le dépôt GitHub et identifiant de commit
 ```
 
@@ -85,7 +85,7 @@ projet-maladie-clinvar/
 Le projet applique une séparation claire des responsabilités entre **Bash** (flux système, gestion de fichiers, filtrage de gros volumes) et **Python** (normalisation, structures relationnelles, statistiques et visualisation graphique) :
 
 ```
-[NCBI ClinVar] -> variant_summary.txt.gz (~456.5 Mo compressé, ~4.1 Go décompressé)
+[NCBI ClinVar] -> variant_summary_2026-10.txt.gz (~450,7 Mo compressé, ~4,0 Go décompressé)
        │
        ▼ (1. Téléchargement & Contrôle d'intégrité)
   curl / sha256sum / gzip -t
@@ -97,7 +97,7 @@ Le projet applique une séparation claire des responsabilités entre **Bash** (f
   - Phénotype : Hypertrophic cardiomyopathy (strict)
        │
        ▼
-  data/processed/hcm_variants_grch38.tsv (17 027 lignes)
+  data/processed/hcm_variants_grch38.tsv (17 012 lignes)
        │
        ▼ (3. Analyse Python, dédoublonnage et tri)
   scripts/analyze_genes.py
@@ -129,11 +129,15 @@ Le projet applique une séparation claire des responsabilités entre **Bash** (f
 
 ### Environnement Python
 - Python 3.10 ou version supérieure.
-- Installation des dépendances via pip :
+- Création d'un environnement virtuel isolé, puis installation des dépendances :
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+> Le premier lancement de `./run.sh` télécharge automatiquement ~450 Mo (connexion Internet requise, 3 à 5 minutes selon le débit), puis filtre et analyse les données (~1 minute). Prévoir ~1 Go d'espace disque. Le jeu de données est une copie mensuelle archivée de ClinVar (`variant_summary_2026-10.txt.gz`) qui ne change jamais : la somme SHA-256 et les résultats restent identiques d'une machine à l'autre.
 
 ---
 
@@ -184,7 +188,7 @@ Si vous souhaitez exécuter séparément chaque composant :
 
 ```bash
 # 1. Étape Shell seule
-./scripts/filter_hcm_variants.sh data/raw/variant_summary.txt.gz data/processed/hcm_variants_grch38.tsv
+./scripts/filter_hcm_variants.sh data/raw/variant_summary_2026-10.txt.gz data/processed/hcm_variants_grch38.tsv
 
 # 2. Étape Python seule
 python3 scripts/analyze_genes.py \
@@ -217,28 +221,28 @@ python3 -m unittest discover -s tests -v
 
 ### Classement des principaux gènes
 
-Sur le jeu de données officiel ClinVar (Release 2026-10-19, 17 027 lignes HCM brutes dans GRCh38), après filtrage strict et dédoublonnage, **1 435 variants distincts** répartis sur **40 gènes** sont retenus :
+Sur le jeu de données officiel ClinVar (Release 2026-10, copie mensuelle archivée, 17 012 lignes HCM brutes dans GRCh38), après filtrage strict et dédoublonnage, **1 427 variants distincts** répartis sur **40 gènes** sont retenus :
 
 | Rang | Symbole Gène | Nom de la Protéine | Variants Distincts | Part (%) | Rôle Physiopathologique |
 | :---: | :--- | :--- | :---: | :---: | :--- |
-| **1** | **MYBPC3** | Myosin-binding protein C, cardiaque | **838** | **58,40 %** | Protéine sarcomérique clé ; mutations tronquantes fréquentes (haplo-insuffisance). |
-| **2** | **MYH7** | Chaîne lourde de bêta-myosine cardiaque | **308** | **21,46 %** | Protéine du filament épais ; mutations faux-sens dominantes au niveau de la tête motrice. |
-| **3** | **FLNC** | Filamine C | **66** | **4,60 %** | Protéine du disque Z et du cytosquelette intercalaire ; associée aux formes arythmogènes. |
-| **4** | **TNNI3** | Troponine I cardiaque | **56** | **3,90 %** | Composante du complexe régulateur de la troponine du filament fin. |
-| **5** | **TNNT2** | Troponine T2 cardiaque | **32** | **2,23 %** | Régulation calcique de la contraction ; associée à des risques de mort subite précoce. |
-| **6** | **TPM1** | Tropomyosine 1 (alpha) | **24** | **1,67 %** | Filament fin du sarcomère. |
-| **7** | **TTN** | Titine | **15** | **1,05 %** | Protéine géante de cohésion élastique du sarcomère. |
+| **1** | **MYBPC3** | Myosin-binding protein C, cardiaque | **832** | **58,30 %** | Protéine sarcomérique clé ; mutations tronquantes fréquentes (haplo-insuffisance). |
+| **2** | **MYH7** | Chaîne lourde de bêta-myosine cardiaque | **309** | **21,65 %** | Protéine du filament épais ; mutations faux-sens dominantes au niveau de la tête motrice. |
+| **3** | **FLNC** | Filamine C | **66** | **4,63 %** | Protéine du disque Z et du cytosquelette intercalaire ; associée aux formes arythmogènes. |
+| **4** | **TNNI3** | Troponine I cardiaque | **56** | **3,92 %** | Composante du complexe régulateur de la troponine du filament fin. |
+| **5** | **TNNT2** | Troponine T2 cardiaque | **32** | **2,24 %** | Régulation calcique de la contraction ; associée à des risques de mort subite précoce. |
+| **6** | **TPM1** | Tropomyosine 1 (alpha) | **24** | **1,68 %** | Filament fin du sarcomère. |
+| **7** | **TTN** | Titine | **14** | **0,98 %** | Protéine géante de cohésion élastique du sarcomère. |
 | **8** | **PRKAG2** | Sous-unité gamma-2 de la protéine kinase AMPK | **11** | **0,77 %** | Phénocopie métabolique de CMH avec préexcitation ventriculaire (WPW). |
 | **9** | **MYL2** | Chaîne légère régulatrice de myosine | **10** | **0,70 %** | Filament épais. |
 | **10** | **ALPK3** | Alpha-kinase 3 | **8** | **0,56 %** | Régulateur de l'intégrité sarcomérique (formes néonatales/sévères). |
 
-> **Constat biologique majeur :** Les gènes sarcomériques classiques **MYBPC3** et **MYH7** concentrent à eux seuls **79,86 % (~80 %)** de l'ensemble des variants pathogènes recensés, confirmant pleinement les données établies de la littérature médicale internationale (Marian & Braunwald, 2017).
+> **Constat biologique majeur :** Les gènes sarcomériques classiques **MYBPC3** et **MYH7** concentrent à eux seuls **79,96 % (~80 %)** de l'ensemble des variants pathogènes recensés, en cohérence avec la littérature médicale internationale (Marian & Braunwald, 2017).
 
 ### Description des sorties
 
 - **`results/gene_ranking.csv`** : Tableau récapitulatif classé contenant le rang, le symbole HGNC, le décompte de variants et le pourcentage.
-- **`results/variants_hcm.csv`** : Tableau complet de l'ensemble des 1 435 variants retenus avec leurs identifiants ClinVar (`VariationID`, `AlleleID`, `RCVaccession`, etc.).
-- **`results/excluded_variants.csv`** : Traçabilité intégrale des 15 592 variants exclus avec le motif précis (classification non retenue, gène ambigu, doublon).
+- **`results/variants_hcm.csv`** : Tableau complet de l'ensemble des 1 427 variants retenus avec leurs identifiants ClinVar (`VariationID`, `AlleleID`, `RCVaccession`, etc.).
+- **`results/excluded_variants.csv`** : Traçabilité intégrale des 15 585 variants exclus avec le motif précis (classification non retenue, gène ambigu, doublon).
 - **`results/summary.json`** : Fichier JSON structuré pour intégration web ou programmatique contenant les métadonnées, statistiques globales et note de portée scientifique.
 - **`results/top_genes.png`** : Graphique haute résolution (300 DPI) à barres horizontales prêt pour l'intégration dans le rapport scientifique.
 - **`results/resultats_YYYYMMDD_HHMMSS.tar.gz`** : Archive compressée d'intégrité regroupant les 5 fichiers de résultats générés lors de l'exécution.
@@ -248,17 +252,17 @@ Sur le jeu de données officiel ClinVar (Release 2026-10-19, 17 027 lignes HCM b
 ## 8. Administration Système et Reproductibilité
 
 1. **Intégrité cryptographique (SHA-256) :**  
-   Avant tout traitement, `run.sh` vérifie l'empreinte SHA-256 du jeu de données brut téléchargé pour éviter toute corruption de données ou attaque par rejeu.
+   Avant tout traitement, `run.sh` vérifie l'empreinte SHA-256 du jeu de données brut téléchargé pour éviter toute corruption de données.
 2. **Nettoyage automatique par signaux (`trap`) :**  
    Le script configure `trap cleanup EXIT` et `trap on_signal INT TERM HUP`. Tout fichier temporaire dans `tmp/` est supprimé proprement en cas de succès ou d'interruption par `Ctrl+C`.
 3. **Protection des données brutes en lecture seule :**  
-   Dès son téléchargement et sa vérification, le fichier `data/raw/variant_summary.txt.gz` est verrouillé en lecture seule via `chmod a-w`.
+   Dès son téléchargement et sa vérification, le fichier `data/raw/variant_summary_2026-10.txt.gz` est verrouillé en lecture seule via `chmod a-w`.
 4. **Journaux d'exécution horodatés :**  
-   Chaque exécution génère un fichier journal dédié `logs/run_YYYYMMDD_HHMMSS.log` capturant la sortie standard et d'erreur avec horodatage millimétré.
+   Chaque exécution génère un fichier journal dédié `logs/run_YYYYMMDD_HHMMSS.log` capturant la sortie standard et d'erreur avec horodatage à la seconde.
 5. **Répétabilité sans intervention manuelle :**  
    Le pipeline peut être relancé indéfiniment de manière idempotente sans nettoyage préalable.
 6. **Planification automatique (Cron) :**  
-   Le fichier `cron/clinvar_pipeline.cron` permet de déployer une exécution mensuelle automatique pour intégrer les mises à jour publiées par NCBI ClinVar.
+   Le fichier `cron/clinvar_pipeline.cron` permet de déployer une exécution mensuelle automatique du pipeline. Installation : vérifier/adapter le chemin du projet dans le fichier, puis `crontab cron/clinvar_pipeline.cron` et `crontab -l` pour contrôler.
 
 ---
 
@@ -275,10 +279,14 @@ Sur le jeu de données officiel ClinVar (Release 2026-10-19, 17 027 lignes HCM b
 
 ---
 
-## Membres de l'Équipe et Contributions
+## Membres de l'Équipe et Répartition du Travail
 
-- **Étudiant 1 :** Orchestration générale (`run.sh`), filtre Shell (`scripts/filter_hcm_variants.sh`), intégration globale.
-- **Étudiant 2 :** Analyse des sources, documentation `SOURCES.md`, intégrité SHA-256 et configuration `config/dataset.env`.
-- **Étudiant 3 :** Développement du script Python d'analyse `scripts/analyze_genes.py` et suite de tests `tests/test_analyze_genes.py`.
-- **Étudiant 4 :** Environnement, gestion des dépendances `requirements.txt`, automatisation `cron/clinvar_pipeline.cron` et permissions système.
-- **Étudiant 5 :** Documentation `README.md`, rapport scientifique `rapport.md`, support de présentation `presentation.md` et fiche de validation.
+Chaque membre prend en charge un chapitre du cadre technique (4 critères chacun), des parties du rapport et de la présentation orale, et sait expliquer le pipeline complet en une minute (téléchargement → vérification → filtrage → analyse → archive).
+
+| Membre | Chapitre | Fichiers maîtrisés | Parties du rapport |
+| :--- | :--- | :--- | :--- |
+| **Aggoun Yasmine** | Shell | `scripts/filter_hcm_variants.sh` ; dans `run.sh` : aide `-h`, `getopts`, code de retour | §3.1, §7.2, §10 |
+| **Daoudi Anfal** | Programmation de script | `run.sh` : `set -Eeuo pipefail`, `trap`, fonctions réutilisées, relance sans nettoyage | Résumé, §7.1, §7.3 |
+| **Toubal Abdelghani** | Python | `scripts/analyze_genes.py`, `tests/test_analyze_genes.py` | §3.2, §4, §7.5 |
+| **Zaourar Meriem** | Administration système | `requirements.txt` et venv, `cron/`, `logs/`, droits (`chmod a-w`, `+x`) | §5, §6, §7.4, §8 |
+| **Belferkous Imene** | Fichiers et données | `SOURCES.md`, `config/dataset.env`, SHA-256, archive `tar`, README | §1, §2, §9 |

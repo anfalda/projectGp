@@ -17,6 +17,7 @@ DRY_RUN=0
 TEMP_DIR=""
 LOG_FILE=""
 PYTHON_CMD=""
+PARTIAL_FILE=""
 
 usage() {
     cat <<'EOF'
@@ -53,6 +54,9 @@ cleanup() {
     local exit_code=$?
     if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
         rm -rf -- "$TEMP_DIR"
+    fi
+    if [[ -n "$PARTIAL_FILE" && -f "$PARTIAL_FILE" ]]; then
+        rm -f -- "$PARTIAL_FILE"
     fi
     if (( exit_code != 0 )); then
         log "ERREUR" "Pipeline interrompu (code $exit_code). Consultez le journal: ${LOG_FILE:-non cree}." >&2
@@ -138,6 +142,7 @@ download_file() {
     local destination="$2"
     local expected_sha="$3"
     local partial="$destination.part"
+    PARTIAL_FILE="$partial"
 
     if [[ -f "$destination" && "$FORCE_DOWNLOAD" -eq 0 ]]; then
         log "INFO" "Fichier deja present: $(basename "$destination")"
@@ -154,6 +159,7 @@ download_file() {
     log "INFO" "Telechargement de $(basename "$destination")"
     curl --fail --location --retry 3 --retry-delay 5 --output "$partial" "$url"
     mv -- "$partial" "$destination"
+    PARTIAL_FILE=""
     verify_file "$destination" "$expected_sha"
     chmod a-w "$destination"
 }
@@ -188,6 +194,12 @@ archive_results() {
     archive="$RESULTS_DIR/resultats_${timestamp}.tar.gz"
     tar -czf "$archive" -C "$RESULTS_DIR" "${expected_outputs[@]}"
     log "OK" "Resultats archives: $archive"
+}
+
+show_results() {
+    log "INFO" "Classement des ${TOP_N} premiers genes (results/gene_ranking.csv)"
+    head -n "$((TOP_N + 1))" "$RESULTS_DIR/gene_ranking.csv" \
+        | awk -F, '{printf "%-6s %-12s %-22s %s\n", $1, $2, $3, $4}'
 }
 
 print_plan() {
@@ -248,4 +260,5 @@ download_file "$VARIANT_URL" "$variant_path" "$VARIANT_SHA256"
 run_shell_filter "$variant_path"
 run_python_analysis
 archive_results
+show_results
 log "OK" "Pipeline termine avec succes."
