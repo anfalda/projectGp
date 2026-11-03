@@ -84,6 +84,17 @@ resolve_python() {
     fi
 }
 
+setup_venv() {
+    local venv_dir="$PROJECT_ROOT/.venv"
+    if [[ ! -x "$venv_dir/bin/python" ]]; then
+        log "INFO" "Creation de l'environnement virtuel"
+        "$PYTHON_CMD" -m venv "$venv_dir" || die "venv impossible (installez python3-venv)."
+    fi
+    "$venv_dir/bin/pip" install --quiet -r "$PROJECT_ROOT/requirements.txt" || die "Installation des dependances impossible."
+    PYTHON_CMD="$venv_dir/bin/python"
+    export MPLBACKEND=Agg
+}
+
 ensure_directories() {
     mkdir -p "$RAW_DIR" "$PROCESSED_DIR" "$RESULTS_DIR" "$LOG_DIR" "$TMP_ROOT"
     TEMP_DIR="$(mktemp -d "$TMP_ROOT/run.XXXXXX")"
@@ -241,6 +252,7 @@ require_command tar
 require_command tee
 require_command mktemp
 resolve_python
+setup_venv
 
 log "INFO" "Demarrage du pipeline ClinVar $CLINVAR_RELEASE"
 variant_path="$RAW_DIR/$VARIANT_FILENAME"
