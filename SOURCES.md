@@ -4,7 +4,7 @@
 
 - **Organisme producteur :** National Center for Biotechnology Information (NCBI), National Library of Medicine (NLM), National Institutes of Health (NIH), États-Unis.
 - **Base de données :** **ClinVar** (archive publique de rapports sur les relations entre les variations génomiques humaines et les phénotypes observés).
-- **Fichier local utilisé :** `variant_summary.txt.gz`
+- **Fichier local utilisé :** `variant_summary_2026-10.txt.gz`
 - **URL officielle communiquée pour le projet :**
   `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/variant_summary.txt.gz`
 - **URL de l'archive exacte utilisée :**
@@ -22,13 +22,13 @@ Les deux URL ne désignent pas nécessairement le même instantané. Pour garant
 
 | Propriété | Valeur vérifiée |
 | :--- | :--- |
-| **Nom du fichier local** | `variant_summary.txt.gz` |
+| **Nom du fichier local** | `variant_summary_2026-10.txt.gz` |
 | **Nom du fichier dans l'archive** | `variant_summary_2026-10.txt.gz` |
 | **Taille compressée** | 450 727 547 octets (~450,7 MB / 430 MiB) |
 | **Format** | Fichier texte tabulé (TSV), compressé avec gzip |
 | **SHA-256** | `a6a58df4d9049c9187a79a8fb4e70f1f3b5550e1708c6c74b7be0b268f5032da` |
 | **Intégrité gzip** | Vérifiée avec `gzip -t` |
-| **Taille décompressée** | Non renseignée dans cette fiche ; à mesurer séparément |
+| **Taille décompressée** | 4 043 056 609 octets (~4,04 Go) |
 
 Pour comparaison, lors de la vérification du 04/11/2026, l'URL officielle communiquée pour le projet répondait avec le statut HTTP `200 OK` et annonçait une taille de 457 862 838 octets. Cette taille concerne le fichier courant à cette URL et non l'archive mensuelle utilisée.
 

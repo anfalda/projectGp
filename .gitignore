@@ -18,3 +18,5 @@ __pycache__/
 logs/*.log
 results/*.tar.gz
 .venv/
+
+*:Zone.Identifier

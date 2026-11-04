@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Bash 5.0+](https://img.shields.io/badge/bash-5.0+-green.svg)](https://www.gnu.org/software/bash/)
-[![Dataset ClinVar](https://img.shields.io/badge/data-NCBI%20ClinVar-orange.svg)](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/variant_summary.txt.gz)
+[![Dataset ClinVar](https://img.shields.io/badge/data-NCBI%20ClinVar-orange.svg)](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/variant_summary_2026-10.txt.gz)
 [![License: CC0 / Public Domain](https://img.shields.io/badge/license-Public%20Domain-lightgrey.svg)](SOURCES.md)
 
 Ce projet implémente un pipeline bioinformatique automatisé et reproductible combinant **Bash** et **Python 3** pour identifier et hiérarchiser les gènes concentrant le plus grand nombre de variants distincts classés **« Pathogenic »** ou **« Likely pathogenic »** dans la base de données **NCBI ClinVar**, spécifiquement associés à la **cardiomyopathie hypertrophique (CMH / HCM)**.
@@ -48,7 +48,7 @@ projet-maladie-clinvar/
 │   └── clinvar_pipeline.cron     # Configuration d'automatisation planifiée cron
 │
 ├── data/
-│   ├── raw/                     # Données brutes téléchargées (variant_summary.txt.gz)
+│   ├── raw/                     # Données brutes téléchargées (variant_summary_2026-10.txt.gz)
 │   └── processed/               # Données filtrées intermédiaires (hcm_variants_grch38.tsv)
 │
 ├── logs/                        # Fichiers journaux horodatés (run_YYYYMMDD_HHMMSS.log)
@@ -85,7 +85,7 @@ projet-maladie-clinvar/
 Le projet applique une séparation claire des responsabilités entre **Bash** (flux système, gestion de fichiers, filtrage de gros volumes) et **Python** (normalisation, structures relationnelles, statistiques et visualisation graphique) :
 
 ```
-[NCBI ClinVar] -> variant_summary.txt.gz (archive 2026-10, 450,7 MB compressés)
+[NCBI ClinVar] -> variant_summary_2026-10.txt.gz (archive 2026-10, 450,7 MB compressés)
        │
        ▼ (1. Téléchargement & Contrôle d'intégrité)
   curl / sha256sum / gzip -t
@@ -184,7 +184,7 @@ Si vous souhaitez exécuter séparément chaque composant :
 
 ```bash
 # 1. Étape Shell seule
-./scripts/filter_hcm_variants.sh data/raw/variant_summary.txt.gz data/processed/hcm_variants_grch38.tsv
+./scripts/filter_hcm_variants.sh data/raw/variant_summary_2026-10.txt.gz data/processed/hcm_variants_grch38.tsv
 
 # 2. Étape Python seule
 python3 scripts/analyze_genes.py \
@@ -254,7 +254,7 @@ Les nombres de la colonne « VariationID distincts par gène » sont des décomp
 2. **Nettoyage automatique par signaux (`trap`) :**  
    Le script configure `trap cleanup EXIT` et `trap on_signal INT TERM HUP`. Tout fichier temporaire dans `tmp/` est supprimé proprement en cas de succès ou d'interruption par `Ctrl+C`.
 3. **Protection des données brutes en lecture seule :**  
-   Dès son téléchargement et sa vérification, le fichier `data/raw/variant_summary.txt.gz` est verrouillé en lecture seule via `chmod a-w`.
+   Dès son téléchargement et sa vérification, le fichier `data/raw/variant_summary_2026-10.txt.gz` est verrouillé en lecture seule via `chmod a-w`.
 4. **Journaux d'exécution horodatés :**  
    Chaque exécution génère un fichier journal dédié `logs/run_YYYYMMDD_HHMMSS.log` capturant la sortie standard et d'erreur avec horodatage millimétré.
 5. **Répétabilité sans intervention manuelle :**  

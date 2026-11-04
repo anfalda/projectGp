@@ -11,8 +11,8 @@
 #    - L'option -t 15 conserve le top 15 dans les graphiques et resumes.
 #    - Redirection de la sortie standard et d'erreur vers un journal mensuel dedie.
 #
-0 2 1 * * student cd /home/student/projet-maladie-clinvar && ./run.sh -f -t 15 >> /home/student/projet-maladie-clinvar/logs/cron_$(date +\%Y\%m\%d).log 2>&1
+0 2 1 * * cd $HOME/projectGp && PYTHON_BIN=$HOME/projectGp/.venv/bin/python ./run.sh -t 15 >> $HOME/projectGp/logs/cron_$(date +\%Y\%m\%d).log 2>&1
 
 # 2. Nettoyage preventif des archives et journaux de plus de 90 jours (le dimanche a 03h00)
-0 3 * * 0 student find /home/student/projet-maladie-clinvar/logs -type f -name "run_*.log" -mtime +90 -delete
-0 3 * * 0 student find /home/student/projet-maladie-clinvar/results -type f -name "resultats_*.tar.gz" -mtime +90 -delete
+0 3 * * 0 find $HOME/projectGp/logs -type f -name "run_*.log" -mtime +90 -delete
+0 3 * * 0 find $HOME/projectGp/results -type f -name "resultats_*.tar.gz" -mtime +90 -delete

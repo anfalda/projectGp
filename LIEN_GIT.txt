@@ -1,2 +1,1 @@
-URL_DU_DEPOT=https://github.com/anfalda/projet-maladie-clinvar.git
-COMMIT_FINAL=5993854c7e40b8e3ea7a9dbbd0c480f6d7e8cdbe
+URL_DU_DEPOT=https://github.com/anfalda/projectGp.git
