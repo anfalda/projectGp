@@ -161,9 +161,14 @@ download_file() {
         chmod u+w "$destination" 2>/dev/null || true
         rm -f -- "$destination"
     fi
-    rm -f -- "$partial"
     log "INFO" "Telechargement de $(basename "$destination")"
-    curl --fail --location --retry 3 --retry-delay 5 --output "$partial" "$url"
+    local attempt=1
+    until curl --fail --location --continue-at - --retry 3 --retry-delay 5 --output "$partial" "$url"; do
+        (( attempt < 10 )) || die "Telechargement impossible apres 10 tentatives."
+        log "WARN" "Telechargement interrompu, reprise (tentative $attempt/10)"
+        attempt=$((attempt + 1))
+        sleep 5
+    done
     mv -- "$partial" "$destination"
     verify_file "$destination" "$expected_sha"
     chmod a-w "$destination"
