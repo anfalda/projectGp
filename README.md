@@ -39,43 +39,34 @@ Ce projet implémente un pipeline bioinformatique automatisé et reproductible c
 ## 2. Architecture du Projet
 
 ```text
-projet-maladie-clinvar/
-│
+redesigned-spoon/
+├── assets/
+│   └── usthb_logo.png
 ├── config/
-│   └── dataset.env              # Variables d'environnement, URLs officielles et SHA-256
-│
+│   └── dataset.env
 ├── cron/
-│   └── clinvar_pipeline.cron     # Configuration d'automatisation planifiée cron
-│
+│   └── clinvar_pipeline.cron
 ├── data/
-│   ├── raw/                     # Données brutes téléchargées (variant_summary_2026-10.txt.gz)
-│   └── processed/               # Données filtrées intermédiaires (hcm_variants_grch38.tsv)
-│
-├── logs/                        # Fichiers journaux horodatés (run_YYYYMMDD_HHMMSS.log)
-│
-├── results/                     # Résultats finaux d'analyse
-│   ├── gene_ranking.csv         # Classement des gènes par nombre de variants
-│   ├── variants_hcm.csv         # Table des variants pathogènes retenus
-│   ├── excluded_variants.csv    # Table des enregistrements exclus et motifs
-│   ├── summary.json             # Synthèse statistique et métadonnées
-│   ├── top_genes.png            # Graphique haute résolution du Top gènes
-│   └── resultats_*.tar.gz       # Archive horodatée des résultats
-│
+│   ├── raw/                     # Données brutes téléchargées
+│   └── processed/               # Données filtrées
+├── logs/                        # Journaux horodatés
+├── results/                     # Résultats CSV, JSON et PNG
 ├── scripts/
-│   ├── filter_hcm_variants.sh   # Étape Shell : décompression en flux et filtrage strict
-│   └── analyze_genes.py         # Étape Python : dédoublonnage, calculs et visualisations
-│
+│   ├── analyze_genes.py
+│   ├── filter_hcm_variants.sh
+│   └── generate_pdf_report.py
 ├── tests/
-│   └── test_analyze_genes.py    # Suite de tests unitaires automatisés (unittest)
-│
-├── tmp/                         # Fichiers temporaires nettoyés par trap EXIT
-├── run.sh                       # Script d'orchestration principal (POSIX Bash)
-├── requirements.txt             # Dépendances logicielles Python
-├── README.md                    # Documentation complète du projet
-├── SOURCES.md                   # Fiche descriptive des sources de données et intégrité
-├── FICHE_VALIDATION_SUJET.md    # Fiche de cadrage académique
-├── GUIDE_EQUIPE.md              # Guide d'organisation et interfaces d'équipe
-└── LIEN_GIT.txt                 # Lien vers le dépôt GitHub et identifiant de commit
+│   ├── test_analyze_genes.py
+│   └── test_results_documentation.py
+├── tmp/                         # Fichiers temporaires
+├── .gitattributes
+├── .gitignore
+├── LIEN_GIT.txt
+├── README.md
+├── requirements.txt
+├── rapport.pdf
+├── run.sh
+└── SOURCES.md
 ```
 
 ---
@@ -129,11 +120,22 @@ Le projet applique une séparation claire des responsabilités entre **Bash** (f
 
 ### Environnement Python
 - Python 3.10 ou version supérieure.
-- Installation des dépendances via pip :
+- Installation dans un environnement virtuel Python :
+
+Pour utiliser la tâche Cron, cloner le dépôt dans `$HOME/projectGp`.
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/anfalda/projectGp.git "$HOME/projectGp"
+cd "$HOME/projectGp"
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+chmod +x run.sh scripts/filter_hcm_variants.sh
+./run.sh
 ```
+
+Effectuer ce premier lancement avant d'activer Cron : il prépare les dossiers et l'environnement.
 
 ---
 
@@ -197,7 +199,7 @@ python3 scripts/analyze_genes.py \
 
 ## 6. Tests Automatiques
 
-Une suite de tests unitaires complète basée sur le module standard `unittest` de Python est fournie dans `tests/test_analyze_genes.py`. Elle vérifie sur des jeux de données synthétiques indépendants :
+Une suite de tests automatisés basée sur le module standard `unittest` de Python est répartie dans `tests/test_analyze_genes.py` et `tests/test_results_documentation.py`. Elle vérifie sur des jeux de données synthétiques indépendants :
 1. L'acceptation stricte des classes `Pathogenic`, `Likely pathogenic` et `Pathogenic/Likely pathogenic`.
 2. Le rejet des classifications bénignes, incertaines (VUS) et conflictuelles.
 3. Le dédoublonnage des `VariationID` identiques pour un même gène.
@@ -205,6 +207,7 @@ Une suite de tests unitaires complète basée sur le module standard `unittest` 
 5. L'exclusion documentée des symboles de gènes ambigus multi-gènes (séparateur `;`).
 6. Le tri décroissant exact du classement des gènes.
 7. La conformité de l'interface CLI et la création des 5 livrables.
+8. La cohérence entre les résultats générés et les statistiques documentées dans le README.
 
 Pour lancer les tests :
 ```bash
@@ -250,17 +253,17 @@ Les nombres de la colonne « VariationID distincts par gène » sont des décomp
 ## 8. Administration Système et Reproductibilité
 
 1. **Intégrité cryptographique (SHA-256) :**  
-   Avant tout traitement, `run.sh` vérifie l'empreinte SHA-256 du jeu de données brut téléchargé pour éviter toute corruption de données ou attaque par rejeu.
+   Avant tout traitement, `run.sh` vérifie l'empreinte SHA-256 du jeu de données brut téléchargé afin de détecter une corruption ou une modification du fichier.
 2. **Nettoyage automatique par signaux (`trap`) :**  
    Le script configure `trap cleanup EXIT` et `trap on_signal INT TERM HUP`. Tout fichier temporaire dans `tmp/` est supprimé proprement en cas de succès ou d'interruption par `Ctrl+C`.
 3. **Protection des données brutes en lecture seule :**  
    Dès son téléchargement et sa vérification, le fichier `data/raw/variant_summary_2026-10.txt.gz` est verrouillé en lecture seule via `chmod a-w`.
 4. **Journaux d'exécution horodatés :**  
-   Chaque exécution génère un fichier journal dédié `logs/run_YYYYMMDD_HHMMSS.log` capturant la sortie standard et d'erreur avec horodatage millimétré.
+   Chaque exécution génère un fichier journal dédié `logs/run_YYYYMMDD_HHMMSS.log` capturant la sortie standard et d'erreur avec un horodatage à la seconde.
 5. **Répétabilité sans intervention manuelle :**  
-   Le pipeline peut être relancé indéfiniment de manière idempotente sans nettoyage préalable.
+   Le pipeline peut être relancé sans nettoyage manuel préalable ; chaque exécution produit un nouveau journal et une nouvelle archive horodatée.
 6. **Planification automatique (Cron) :**  
-   Le fichier `cron/clinvar_pipeline.cron` permet de déployer une exécution mensuelle automatique pour intégrer les mises à jour publiées par NCBI ClinVar.
+   Le fichier `cron/clinvar_pipeline.cron` permet de planifier une réexécution mensuelle de l'analyse sur la release archivée `2026-10`. Cette planification assure la répétabilité du traitement, mais ne met pas automatiquement à jour la version du jeu de données.
 
 ---
 
@@ -279,8 +282,10 @@ Les nombres de la colonne « VariationID distincts par gène » sont des décomp
 
 ## Membres de l'Équipe et Contributions
 
-- **Étudiant 1 :** Orchestration générale (`run.sh`), filtre Shell (`scripts/filter_hcm_variants.sh`), intégration globale.
-- **Étudiant 2 :** Analyse des sources, documentation `SOURCES.md`, intégrité SHA-256 et configuration `config/dataset.env`.
-- **Étudiant 3 :** Développement du script Python d'analyse `scripts/analyze_genes.py` et suite de tests `tests/test_analyze_genes.py`.
-- **Étudiant 4 :** Environnement, gestion des dépendances `requirements.txt`, automatisation `cron/clinvar_pipeline.cron` et permissions système.
-- **Étudiant 5 :** Documentation `README.md`, rapport scientifique `rapport.md`, support de présentation `presentation.md` et fiche de validation.
+**Groupe 1 — Répartition des responsabilités :**
+
+- **AGGOUN SOUNDOUS YASMINE — Shell :** aide et options de `run.sh`, gestion des erreurs de fichiers, commandes Shell avec pipes et filtrage des variants.
+- **DAOUDI ANFAL — Programmation de script :** gestion des erreurs et des signaux avec `trap`, mode sécurisé `set -Eeuo pipefail`, fonctions réutilisables et relance du pipeline.
+- **TOUBAL ABDELGHANI — Python :** analyse statistique avec `argparse`, génération des figures, export CSV/JSON et tests automatiques.
+- **ZAOUAR MERIEM — Administration système :** environnement virtuel, dépendances, tâche Cron, journaux horodatés et permissions.
+- **BELFERKOUS IMENE — Fichiers et données :** organisation de l'arborescence, sommes SHA-256, archivage daté des résultats et documentation des sources.

@@ -1,18 +1,18 @@
-# /etc/cron.d/clinvar_pipeline
+# Planification pour le pipeline ClinVar HCM.
+# Installer dans le crontab de l'utilisateur avec : crontab -e
+# Le depot doit etre clone dans : $HOME/projectGp
 #
-# Planification cron pour l'automatisation du pipeline d'analyse ClinVar HCM.
-# Fichier gere par l'Etudiant 4 - Environnement et administration systeme.
+# IMPORTANT :
+# Le pipeline utilise la release archivee 2026-10 definie dans
+# config/dataset.env. Cette tache relance l'analyse chaque mois ;
+# elle ne telecharge pas automatiquement une nouvelle release ClinVar.
 #
-# Format standard cron :
-# m h dom mon dow user command
+# Format du crontab utilisateur :
+# minute heure jour mois jour_semaine commande
 #
-# 1. Mise a jour et re-execution automatique le 1er jour de chaque mois a 02h00
-#    - L'option -f force le re-telechargement de la derniere release mensuelle NCBI ClinVar.
-#    - L'option -t 15 conserve le top 15 dans les graphiques et resumes.
-#    - Redirection de la sortie standard et d'erreur vers un journal mensuel dedie.
-#
+# Reexecution le premier jour de chaque mois a 02h00.
 0 2 1 * * cd $HOME/projectGp && PYTHON_BIN=$HOME/projectGp/.venv/bin/python ./run.sh -t 15 >> $HOME/projectGp/logs/cron_$(date +\%Y\%m\%d).log 2>&1
 
-# 2. Nettoyage preventif des archives et journaux de plus de 90 jours (le dimanche a 03h00)
+# Suppression des journaux et archives de plus de 90 jours, le dimanche a 03h00.
 0 3 * * 0 find $HOME/projectGp/logs -type f -name "run_*.log" -mtime +90 -delete
 0 3 * * 0 find $HOME/projectGp/results -type f -name "resultats_*.tar.gz" -mtime +90 -delete
