@@ -32,7 +32,7 @@ Ce projet implémente un pipeline bioinformatique automatisé et reproductible c
 
 - **Question de recherche :** *Quels gènes concentrent le plus de variants distincts classés « Pathogenic » ou « Likely pathogenic » dans ClinVar, associés spécifiquement à la cardiomyopathie hypertrophique ?*
 - **Pathologie étudiée :** La **cardiomyopathie hypertrophique (CMH)** est une maladie myocardique génétique fréquente (prévalence estimée à 1/500 dans la population générale), caractérisée par une hypertrophie ventriculaire gauche inexpliquée par une surcharge de pression ou de volume. Elle constitue l'une des causes majeures de mort subite chez l'adulte jeune et l'athlète.
-- **Distinction scientifique essentielle :** L'analyse porte sur le nombre de **variants distincts répertoriés** (`VariationID` unique dans ClinVar) et non sur la prévalence clinique ou le nombre de patients porteurs. Le résultat décrit l'hétérogénéité mutationnelle documentée dans les bases de données d'interprétation clinique.
+- **Distinction scientifique essentielle :** Pour chaque gène, le classement compte les `VariationID` distincts. Le total global correspond aux **associations variant–gène retenues** après dédoublonnage au sein de chaque gène. Un même `VariationID` peut être associé à plusieurs gènes. Les pourcentages représentent la part de chaque gène dans le total des associations retenues, et non une prévalence clinique ou un nombre de patients porteurs.
 
 ---
 
@@ -85,7 +85,7 @@ projet-maladie-clinvar/
 Le projet applique une séparation claire des responsabilités entre **Bash** (flux système, gestion de fichiers, filtrage de gros volumes) et **Python** (normalisation, structures relationnelles, statistiques et visualisation graphique) :
 
 ```
-[NCBI ClinVar] -> variant_summary.txt.gz (~456.5 Mo compressé, ~4.1 Go décompressé)
+[NCBI ClinVar] -> variant_summary.txt.gz (archive 2026-10, 450,7 MB compressés)
        │
        ▼ (1. Téléchargement & Contrôle d'intégrité)
   curl / sha256sum / gzip -t
@@ -97,13 +97,13 @@ Le projet applique une séparation claire des responsabilités entre **Bash** (f
   - Phénotype : Hypertrophic cardiomyopathy (strict)
        │
        ▼
-  data/processed/hcm_variants_grch38.tsv (17 027 lignes)
+  data/processed/hcm_variants_grch38.tsv (17 012 enregistrements)
        │
        ▼ (3. Analyse Python, dédoublonnage et tri)
   scripts/analyze_genes.py
   - Retient : Pathogenic, Likely pathogenic, Pathogenic/Likely pathogenic
   - Exclut : VUS, Benign, Conflicting, gènes manquants ou multi-gènes (;)
-  - Dédoublonne par VariationID unitaire
+  - Dédoublonne les VariationID au sein de chaque gène
        │
        ▼ (4. Génération des résultats)
   results/gene_ranking.csv, variants_hcm.csv, excluded_variants.csv, summary.json, top_genes.png
@@ -217,28 +217,30 @@ python3 -m unittest discover -s tests -v
 
 ### Classement des principaux gènes
 
-Sur le jeu de données officiel ClinVar (Release 2026-10-19, 17 027 lignes HCM brutes dans GRCh38), après filtrage strict et dédoublonnage, **1 435 variants distincts** répartis sur **40 gènes** sont retenus :
+Sur le jeu de données ClinVar (Release 2026-10), le filtrage a produit **17 012 enregistrements HCM**. Après les critères de sélection et le dédoublonnage, **1 427 associations variant–gène** sont retenues et réparties sur **40 gènes**. Au total, **15 585 enregistrements** sont exclus.
 
-| Rang | Symbole Gène | Nom de la Protéine | Variants Distincts | Part (%) | Rôle Physiopathologique |
+Les nombres de la colonne « VariationID distincts par gène » sont des décomptes distincts au sein de chaque gène. Les pourcentages sont calculés sur les 1 427 associations variant–gène retenues.
+
+| Rang | Symbole Gène | Nom de la Protéine | VariationID distincts par gène | Part (%) | Rôle Physiopathologique |
 | :---: | :--- | :--- | :---: | :---: | :--- |
-| **1** | **MYBPC3** | Myosin-binding protein C, cardiaque | **838** | **58,40 %** | Protéine sarcomérique clé ; mutations tronquantes fréquentes (haplo-insuffisance). |
-| **2** | **MYH7** | Chaîne lourde de bêta-myosine cardiaque | **308** | **21,46 %** | Protéine du filament épais ; mutations faux-sens dominantes au niveau de la tête motrice. |
-| **3** | **FLNC** | Filamine C | **66** | **4,60 %** | Protéine du disque Z et du cytosquelette intercalaire ; associée aux formes arythmogènes. |
-| **4** | **TNNI3** | Troponine I cardiaque | **56** | **3,90 %** | Composante du complexe régulateur de la troponine du filament fin. |
-| **5** | **TNNT2** | Troponine T2 cardiaque | **32** | **2,23 %** | Régulation calcique de la contraction ; associée à des risques de mort subite précoce. |
-| **6** | **TPM1** | Tropomyosine 1 (alpha) | **24** | **1,67 %** | Filament fin du sarcomère. |
-| **7** | **TTN** | Titine | **15** | **1,05 %** | Protéine géante de cohésion élastique du sarcomère. |
+| **1** | **MYBPC3** | Myosin-binding protein C, cardiaque | **832** | **58,30 %** | Protéine sarcomérique clé ; mutations tronquantes fréquentes (haplo-insuffisance). |
+| **2** | **MYH7** | Chaîne lourde de bêta-myosine cardiaque | **309** | **21,65 %** | Protéine du filament épais ; mutations faux-sens dominantes au niveau de la tête motrice. |
+| **3** | **FLNC** | Filamine C | **66** | **4,63 %** | Protéine du disque Z et du cytosquelette intercalaire ; associée aux formes arythmogènes. |
+| **4** | **TNNI3** | Troponine I cardiaque | **56** | **3,92 %** | Composante du complexe régulateur de la troponine du filament fin. |
+| **5** | **TNNT2** | Troponine T2 cardiaque | **32** | **2,24 %** | Régulation calcique de la contraction ; associée à des risques de mort subite précoce. |
+| **6** | **TPM1** | Tropomyosine 1 (alpha) | **24** | **1,68 %** | Filament fin du sarcomère. |
+| **7** | **TTN** | Titine | **14** | **0,98 %** | Protéine géante de cohésion élastique du sarcomère. |
 | **8** | **PRKAG2** | Sous-unité gamma-2 de la protéine kinase AMPK | **11** | **0,77 %** | Phénocopie métabolique de CMH avec préexcitation ventriculaire (WPW). |
 | **9** | **MYL2** | Chaîne légère régulatrice de myosine | **10** | **0,70 %** | Filament épais. |
 | **10** | **ALPK3** | Alpha-kinase 3 | **8** | **0,56 %** | Régulateur de l'intégrité sarcomérique (formes néonatales/sévères). |
 
-> **Constat biologique majeur :** Les gènes sarcomériques classiques **MYBPC3** et **MYH7** concentrent à eux seuls **79,86 % (~80 %)** de l'ensemble des variants pathogènes recensés, confirmant pleinement les données établies de la littérature médicale internationale (Marian & Braunwald, 2017).
+> **Constat biologique majeur :** MYBPC3 et MYH7 totalisent **79,96 %** des associations variant–gène retenues dans cette analyse. Ce résultat décrit la répartition des enregistrements ClinVar filtrés ; il ne mesure pas la fréquence de ces variants dans la population ni le nombre de patients atteints.
 
 ### Description des sorties
 
 - **`results/gene_ranking.csv`** : Tableau récapitulatif classé contenant le rang, le symbole HGNC, le décompte de variants et le pourcentage.
-- **`results/variants_hcm.csv`** : Tableau complet de l'ensemble des 1 435 variants retenus avec leurs identifiants ClinVar (`VariationID`, `AlleleID`, `RCVaccession`, etc.).
-- **`results/excluded_variants.csv`** : Traçabilité intégrale des 15 592 variants exclus avec le motif précis (classification non retenue, gène ambigu, doublon).
+- **`results/variants_hcm.csv`** : Tableau complet des 1 427 associations variant–gène retenues avec leurs identifiants ClinVar (`VariationID`, `AlleleID`, `RCVaccession`, etc.).
+- **`results/excluded_variants.csv`** : Traçabilité des 15 585 enregistrements exclus avec le motif précis (classification non retenue, gène ambigu, doublon).
 - **`results/summary.json`** : Fichier JSON structuré pour intégration web ou programmatique contenant les métadonnées, statistiques globales et note de portée scientifique.
 - **`results/top_genes.png`** : Graphique haute résolution (300 DPI) à barres horizontales prêt pour l'intégration dans le rapport scientifique.
 - **`results/resultats_YYYYMMDD_HHMMSS.tar.gz`** : Archive compressée d'intégrité regroupant les 5 fichiers de résultats générés lors de l'exécution.

@@ -257,15 +257,17 @@ def export_results(processed_data: dict, output_dir: Path, top_n: int, input_fil
             "top_n_requested": top_n,
         },
         "scientific_scope_note": (
-            "Le champ ClinicalSignificance est une classification agregee au niveau "
-            "du variant (VariationID) dans l'export variant_summary de ClinVar. "
-            "Ces nombres representent des variants distincts repertories avec une classification "
-            "pathogene ou probablement pathogene, et non une prevalence epidemiologique "
-            "ou un decompte de patients atteints."
+            "ClinicalSignificance est une classification agregee au niveau du "
+            "variant (VariationID) dans l'export ClinVar. Le classement compte "
+            "les VariationID distincts pour chaque gene. Le total retenu correspond "
+            "aux associations variant-gene apres dedoublonnage au sein de chaque gene. "
+            "Un meme VariationID peut etre associe a plusieurs genes. Les pourcentages "
+            "sont calcules sur le total des associations retenues. Ces donnees ne "
+            "representent ni une prevalence epidemiologique ni un nombre de patients."
         ),
         "statistics": {
             "total_input_records": processed_data["total_records"],
-            "total_retained_variants": total_retained,
+            "total_retained_variant_gene_associations": total_retained,
             "total_excluded_records": processed_data["total_excluded"],
             "unique_genes_count": len(ranking),
             "accepted_classifications_breakdown": processed_data["accepted_significances"],
@@ -332,11 +334,11 @@ def generate_plot(ranking: list, top_n: int, total_retained: int, output_image_p
 
     # Ajustement des axes et du style
     ax.set_xlim(0, max_count * 1.15)
-    ax.set_xlabel("Nombre de variants distincts (VariationID)", fontsize=11, fontweight="bold", labelpad=10)
+    ax.set_xlabel("Nombre de VariationID distincts par gene", fontsize=11, fontweight="bold", labelpad=10)
     ax.set_ylabel("Gène (symbole officiel HGNC)", fontsize=11, fontweight="bold", labelpad=10)
     ax.set_title(
         f"Top {len(top_data)} des Gènes Associés à la Cardiomyopathie Hypertrophique dans ClinVar\n"
-        f"Variants distincts 'Pathogenic' ou 'Likely pathogenic' (GRCh38, germline) — Total: {total_retained:,} variants",
+        f"Pathogenic / Likely pathogenic (GRCh38, germline) — Total: {total_retained:,} associations variant-gene",
         fontsize=12,
         fontweight="bold",
         pad=15
@@ -353,7 +355,7 @@ def generate_plot(ranking: list, top_n: int, total_retained: int, output_image_p
     # Note de bas de page explicative
     fig.text(
         0.5, 0.01,
-        "Source: NCBI ClinVar (variant_summary.txt.gz) — Décompte par VariationID distinct (non-prévalence clinique).",
+        "Source: NCBI ClinVar — VariationID distincts par gene ; total exprime en associations variant-gene.",
         ha="center", fontsize=8, color="#666666", style="italic"
     )
 
@@ -369,9 +371,9 @@ def main():
         exported = export_results(results, args.output_dir, args.top, args.variants.name)
 
         print(f"[OK] Analyse terminee avec succes.")
-        print(f"     Variants analyses : {results['total_records']}")
-        print(f"     Variants retenus  : {results['total_retained']}")
-        print(f"     Variants exclus   : {results['total_excluded']}")
+        print(f"     Enregistrements analyses : {results['total_records']}")
+        print(f"     Associations retenues    : {results['total_retained']}")
+        print(f"     Enregistrements exclus   : {results['total_excluded']}")
         print(f"     Genes distincts   : {len(results['ranking'])}")
         print(f"     Fichiers generes  : {args.output_dir}/")
         for k, p in exported.items():

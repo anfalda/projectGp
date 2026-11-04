@@ -278,9 +278,13 @@ class TestDatasetProcessing(unittest.TestCase):
         # Vérifier le contenu du JSON
         with open(out_dir / "summary.json", "r", encoding="utf-8") as f:
             summary = json.load(f)
-            self.assertEqual(summary["statistics"]["total_retained_variants"], 3)
+            self.assertEqual(
+                summary["statistics"]["total_retained_variant_gene_associations"], 3
+            )
             self.assertEqual(summary["statistics"]["unique_genes_count"], 2)
             self.assertIn("ClinicalSignificance", summary["scientific_scope_note"])
+            self.assertIn("associations", summary["scientific_scope_note"])
+            self.assertNotIn("total_retained_variants", summary["statistics"])
 
 
 class TestCommandLineInterface(unittest.TestCase):

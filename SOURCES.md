@@ -4,30 +4,36 @@
 
 - **Organisme producteur :** National Center for Biotechnology Information (NCBI), National Library of Medicine (NLM), National Institutes of Health (NIH), États-Unis.
 - **Base de données :** **ClinVar** (archive publique de rapports sur les relations entre les variations génomiques humaines et les phénotypes observés).
-- **Fichier source :** `variant_summary.txt.gz`
-- **URL officielle de téléchargement :**  
+- **Fichier local utilisé :** `variant_summary.txt.gz`
+- **URL officielle communiquée pour le projet :**
   `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/variant_summary.txt.gz`
-- **Répertoire FTP parent :**  
-  `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/`
-- **Version / Release :** `2026-10-19` (instantané hebdomadaire NCBI ClinVar).
-- **Date de vérification et téléchargement :** 23/10/2026 (contrôlé le 30/10/2026).
+- **URL de l'archive exacte utilisée :**
+  `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/variant_summary_2026-10.txt.gz`
+- **Version / Release utilisée :** `2026-10` (archive mensuelle NCBI ClinVar).
+- **Date de vérification de l'URL officielle :** 04/11/2026.
+- **Date de vérification du fichier local :** 04/11/2026.
+- **Dernière modification annoncée par le serveur pour l'URL officielle :** 01/11/2026.
 
 ---
 
 ## 2. Caractéristiques Techniques et Intégrité
 
-| Propriété | Valeur |
+Les deux URL ne désignent pas nécessairement le même instantané. Pour garantir la reproductibilité, le pipeline utilise l'archive mensuelle d'octobre 2026, et non le fichier courant susceptible d'être actualisé.
+
+| Propriété | Valeur vérifiée |
 | :--- | :--- |
-| **Nom du fichier** | `variant_summary.txt.gz` |
-| **Taille compressée (.gz)** | 456 577 488 octets (~456,5 Mo) |
-| **Taille décompressée (.txt)** | 4 085 824 530 octets (~4,09 Go) |
-| **Format** | Fichier texte tabulé (TSV), encodage UTF-8 / ASCII, compressé avec gzip |
-| **Somme de contrôle SHA-256** | `657b47d0a00ba3ad4b3ddf03e160835c8a4a3c7a2e130c92c904b70021a35703` |
-| **Somme de contrôle MD5** | `c79b46f3c02ef544608e0d9a83cac46e` |
+| **Nom du fichier local** | `variant_summary.txt.gz` |
+| **Nom du fichier dans l'archive** | `variant_summary_2026-10.txt.gz` |
+| **Taille compressée** | 450 727 547 octets (~450,7 MB / 430 MiB) |
+| **Format** | Fichier texte tabulé (TSV), compressé avec gzip |
+| **SHA-256** | `a6a58df4d9049c9187a79a8fb4e70f1f3b5550e1708c6c74b7be0b268f5032da` |
+| **Intégrité gzip** | Vérifiée avec `gzip -t` |
+| **Taille décompressée** | Non renseignée dans cette fiche ; à mesurer séparément |
 
-L'intégrité du fichier téléchargé est contrôlée automatiquement dans le pipeline `run.sh` par comparaison de l'empreinte cryptographique SHA-256 et par le test d'intégrité de l'archive gzip (`gzip -t`).
+Pour comparaison, lors de la vérification du 04/11/2026, l'URL officielle communiquée pour le projet répondait avec le statut HTTP `200 OK` et annonçait une taille de 457 862 838 octets. Cette taille concerne le fichier courant à cette URL et non l'archive mensuelle utilisée.
 
----
+L'intégrité du fichier local est contrôlée automatiquement dans le pipeline `run.sh` par comparaison de l'empreinte cryptographique SHA-256 et par le test d'intégrité de l'archive gzip (`gzip -t`).
+
 
 ## 3. Conditions de Réutilisation et Licence
 

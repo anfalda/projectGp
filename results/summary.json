@@ -1,0 +1,126 @@
+{
+  "analysis_metadata": {
+    "date": "2026-11-04 20:43:57",
+    "input_file": "hcm_variants_grch38.tsv",
+    "target_disease": "Cardiomyopathie hypertrophique (HCM/CMH)",
+    "genome_assembly": "GRCh38",
+    "allelic_origin": "germline",
+    "top_n_requested": 15
+  },
+  "scientific_scope_note": "ClinicalSignificance est une classification agregee au niveau du variant (VariationID) dans l'export ClinVar. Le classement compte les VariationID distincts pour chaque gene. Le total retenu correspond aux associations variant-gene apres dedoublonnage au sein de chaque gene. Un meme VariationID peut etre associe a plusieurs genes. Les pourcentages sont calcules sur le total des associations retenues. Ces donnees ne representent ni une prevalence epidemiologique ni un nombre de patients.",
+  "statistics": {
+    "total_input_records": 17012,
+    "total_retained_variant_gene_associations": 1427,
+    "total_excluded_records": 15585,
+    "unique_genes_count": 40,
+    "accepted_classifications_breakdown": {
+      "Pathogenic/Likely pathogenic": 368,
+      "Pathogenic": 684,
+      "Likely pathogenic": 375
+    },
+    "top_exclusion_reasons": {
+      "Classification non retenue: 'Uncertain significance'": 7929,
+      "Classification non retenue: 'Likely benign'": 4897,
+      "Classification non retenue: 'Conflicting classifications of pathogenicity'": 1935,
+      "Classification non retenue: 'Benign/Likely benign'": 564,
+      "Classification non retenue: 'Benign'": 255,
+      "Classification non retenue: 'Benign/Likely benign; other'": 1,
+      "Symbole de gene ambigu (association multi-genes: DNAAF3;DNAAF3-AS1;TNNI3)": 1,
+      "Symbole de gene ambigu (association multi-genes: MHRT;MIR208B;LOC126861897;MYH7)": 1,
+      "Classification non retenue: 'no classifications from unflagged records'": 1,
+      "Annotation complexe non assimilable a un gene unique: subset of 82 genes: SDHB": 1
+    }
+  },
+  "top_genes": [
+    {
+      "Rank": 1,
+      "GeneSymbol": "MYBPC3",
+      "DistinctVariantCount": 832,
+      "PercentageOfRetainedVariants": 58.3
+    },
+    {
+      "Rank": 2,
+      "GeneSymbol": "MYH7",
+      "DistinctVariantCount": 309,
+      "PercentageOfRetainedVariants": 21.65
+    },
+    {
+      "Rank": 3,
+      "GeneSymbol": "FLNC",
+      "DistinctVariantCount": 66,
+      "PercentageOfRetainedVariants": 4.63
+    },
+    {
+      "Rank": 4,
+      "GeneSymbol": "TNNI3",
+      "DistinctVariantCount": 56,
+      "PercentageOfRetainedVariants": 3.92
+    },
+    {
+      "Rank": 5,
+      "GeneSymbol": "TNNT2",
+      "DistinctVariantCount": 32,
+      "PercentageOfRetainedVariants": 2.24
+    },
+    {
+      "Rank": 6,
+      "GeneSymbol": "TPM1",
+      "DistinctVariantCount": 24,
+      "PercentageOfRetainedVariants": 1.68
+    },
+    {
+      "Rank": 7,
+      "GeneSymbol": "TTN",
+      "DistinctVariantCount": 14,
+      "PercentageOfRetainedVariants": 0.98
+    },
+    {
+      "Rank": 8,
+      "GeneSymbol": "PRKAG2",
+      "DistinctVariantCount": 11,
+      "PercentageOfRetainedVariants": 0.77
+    },
+    {
+      "Rank": 9,
+      "GeneSymbol": "MYL2",
+      "DistinctVariantCount": 10,
+      "PercentageOfRetainedVariants": 0.7
+    },
+    {
+      "Rank": 10,
+      "GeneSymbol": "ALPK3",
+      "DistinctVariantCount": 8,
+      "PercentageOfRetainedVariants": 0.56
+    },
+    {
+      "Rank": 11,
+      "GeneSymbol": "MYH7B",
+      "DistinctVariantCount": 8,
+      "PercentageOfRetainedVariants": 0.56
+    },
+    {
+      "Rank": 12,
+      "GeneSymbol": "LAMP2",
+      "DistinctVariantCount": 7,
+      "PercentageOfRetainedVariants": 0.49
+    },
+    {
+      "Rank": 13,
+      "GeneSymbol": "MYH6",
+      "DistinctVariantCount": 5,
+      "PercentageOfRetainedVariants": 0.35
+    },
+    {
+      "Rank": 14,
+      "GeneSymbol": "ACTC1",
+      "DistinctVariantCount": 4,
+      "PercentageOfRetainedVariants": 0.28
+    },
+    {
+      "Rank": 15,
+      "GeneSymbol": "JPH2",
+      "DistinctVariantCount": 4,
+      "PercentageOfRetainedVariants": 0.28
+    }
+  ]
+}
