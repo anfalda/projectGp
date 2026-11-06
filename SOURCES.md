@@ -11,7 +11,7 @@
   `https://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/variant_summary_2026-10.txt.gz`
 - **Version / Release utilisée :** `2026-10` (archive mensuelle NCBI ClinVar).
 - **Date de vérification de l'URL officielle :** 04/11/2026.
-- **Date de vérification du fichier local :** 04/11/2026.
+- **Date de téléchargement du fichier local :** 04/11/2026.
 - **Dernière modification annoncée par le serveur pour l'URL officielle :** 01/11/2026.
 
 ---

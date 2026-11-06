@@ -39,7 +39,7 @@ Ce projet implémente un pipeline bioinformatique automatisé et reproductible c
 ## 2. Architecture du Projet
 
 ```text
-redesigned-spoon/
+projectGp/
 ├── assets/
 │   └── usthb_logo.png
 ├── config/
@@ -53,8 +53,7 @@ redesigned-spoon/
 ├── results/                     # Résultats CSV, JSON et PNG
 ├── scripts/
 │   ├── analyze_genes.py
-│   ├── filter_hcm_variants.sh
-│   └── generate_pdf_report.py
+│   └── filter_hcm_variants.sh
 ├── tests/
 │   ├── test_analyze_genes.py
 │   └── test_results_documentation.py
@@ -287,5 +286,5 @@ Les nombres de la colonne « VariationID distincts par gène » sont des décomp
 - **AGGOUN SOUNDOUS YASMINE — Shell :** aide et options de `run.sh`, gestion des erreurs de fichiers, commandes Shell avec pipes et filtrage des variants.
 - **DAOUDI ANFAL — Programmation de script :** gestion des erreurs et des signaux avec `trap`, mode sécurisé `set -Eeuo pipefail`, fonctions réutilisables et relance du pipeline.
 - **TOUBAL ABDELGHANI — Python :** analyse statistique avec `argparse`, génération des figures, export CSV/JSON et tests automatiques.
-- **ZAOUAR MERIEM — Administration système :** environnement virtuel, dépendances, tâche Cron, journaux horodatés et permissions.
+- **ZAOURAR MERIEM — Administration système :** environnement virtuel, dépendances, tâche Cron, journaux horodatés et permissions.
 - **BELFERKOUS IMENE — Fichiers et données :** organisation de l'arborescence, sommes SHA-256, archivage daté des résultats et documentation des sources.
